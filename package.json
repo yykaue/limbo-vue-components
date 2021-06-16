@@ -1,0 +1,35 @@
+{
+  "name": "limbo-vue-components",
+  "version": "1.0.0",
+  "description": "通用组件库",
+  "main": "index.js",
+  "dependencies": {
+    "babel-plugin-jsx-v-model": "2.0.3",
+    "crypto-js": "3.1.9-1",
+    "path": "^0.12.7",
+    "plupload": "2.3.6",
+    "qrcode": "1.4.4",
+    "video.js": "7.10.2",
+    "wangeditor": "3.1.1"
+  },
+  "devDependencies": {},
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "JS"
+  ],
+  "author": "limbo <yykaue@qq.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yykaue/limbo-vue-components.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yykaue/limbo-vue-components/issues"
+  },
+  "homepage": "https://github.com/yykaue/limbo-vue-components#readme"
+}
