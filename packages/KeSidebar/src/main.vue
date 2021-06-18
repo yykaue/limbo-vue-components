@@ -79,7 +79,7 @@ export default {
     position: relative;
   }
 
-  /deep/ .scrollbar-wrapper {
+  ::v-deep .scrollbar-wrapper {
     height: 100%;
     overflow-x: hidden !important;
     .el-scrollbar__view {

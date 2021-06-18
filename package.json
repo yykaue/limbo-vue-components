@@ -1,6 +1,6 @@
 {
   "name": "limbo-vue-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "通用组件库",
   "main": "index.js",
   "dependencies": {

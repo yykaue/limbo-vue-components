@@ -314,10 +314,10 @@ export default {
     .w100 {
       width: 100%;
     }
-    /deep/ .el-input-number .el-input__inner{
+    ::v-deep .el-input-number .el-input__inner{
       text-align: left;
     }
-    /deep/ .el-checkbox-group{
+    ::v-deep .el-checkbox-group{
       font-size: 1px
     }
   }

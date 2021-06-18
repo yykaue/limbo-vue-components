@@ -76,7 +76,7 @@ export default {
   .paging {
     text-align: right;
     margin-top: 10px;
-    /deep/ .el-input__inner {
+    ::v-deep .el-input__inner {
       height: 28px !important;
     }
   }
