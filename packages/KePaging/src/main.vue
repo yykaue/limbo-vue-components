@@ -54,7 +54,7 @@ export default {
     },
     // currentPage改变
     currentChange (val) {
-      this.$emit('propsFn', {
+      this.$emit('currentChange', {
         type: 'currentPage',
         data: null
       })
