@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import CryptoJS from 'crypto-js'
 import plupload from 'plupload'
 import {
   Button,
@@ -117,8 +116,8 @@ export default {
   methods: {
     init () {
       this.policyBase64 = this.$tools.Base64.encode(JSON.stringify(this.uploadConfig.policyText))
-      const hash = CryptoJS.HmacSHA1(this.policyBase64, this.uploadConfig.accesskey)
-      this.signature = hash.toString(CryptoJS.enc.Base64)
+      const hash = this.$tools.CryptoJS.HmacSHA1(this.policyBase64, this.uploadConfig.accesskey)
+      this.signature = hash.toString(this.$tools.CryptoJS.enc.Base64)
       this.pluploadInit()
     },
     // 显示上传文件信息
