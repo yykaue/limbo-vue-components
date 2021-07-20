@@ -13,13 +13,31 @@ export default {
     ElTable: Table,
     ElTableColumn: TableColumn
   },
+  props: {
+    cols: {
+      type: Array,
+      default: () => ([])
+    },
+    data: {
+      type: Array,
+      default: () => ([])
+    },
+    props: {
+      type: Object,
+      default: () => ({})
+    },
+    params: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   render: (h, ctx) => {
     const {
+      cols: Cols = [],
       data: Data = [],
-      params: Params = {},
       props: Props = {},
-      cols: Cols = []
-    } = ctx.props.tables
+      params: Params = {}
+    } = ctx.props
 
     const loopCols = data => data.map((item, i) => {
       const params = {
