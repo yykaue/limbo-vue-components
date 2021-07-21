@@ -158,9 +158,9 @@
       <el-col
           v-if="formItem.btnObj"
           :span="formItem.btnObj.span || formItem.span">
-        <div :class="formItem.btnObj.className || 'form-btn'">
-          <el-button size="small" type="primary" @click="search">{{formItem.btnObj.name || '搜索'}}</el-button>
-          <el-button size="small" v-if="!formItem.btnObj.unReset" @click="reset">重置</el-button>
+        <div :class="formItem.btnObj.className">
+          <el-button type="primary" @click="search">{{formItem.btnObj.name || '搜索'}}</el-button>
+          <el-button v-if="!formItem.btnObj.unReset" @click="reset">重置</el-button>
         </div>
       </el-col>
     </el-row>
