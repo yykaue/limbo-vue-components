@@ -233,6 +233,9 @@ export default {
   mounted () {},
   methods: {
     radioChange (item, val) {
+      if (!this.$listeners.radioChange) {
+        return
+      }
       this.paging.params.current = 1
       this.$emit('radioChange', {
         type: 'radioChange',
@@ -240,6 +243,9 @@ export default {
       })
     },
     selectChange (item, val) {
+      if (!this.$listeners.selectChange) {
+        return
+      }
       this.paging.params.current = 1
       this.$emit('selectChange', {
         type: 'selectChange',
@@ -259,6 +265,9 @@ export default {
       })
     },
     search () {
+      if (!this.$listeners.search) {
+        return
+      }
       this.paging.params.current = 1
       this.$emit('search', {
         type: 'search',
@@ -291,8 +300,8 @@ export default {
         list.forEach(item => {
           let value = undefined
           if (item.type === 'checkBox'
-            || (item.type === 'dateTimePicker' && ['daterange', 'datetimerange'].includes(item.params.type))
-            || (item.type === 'select' && item.params && item.params.multiple && !item.params.noNeed)) {
+              || (item.type === 'dateTimePicker' && ['daterange', 'datetimerange'].includes(item.params.type))
+              || (item.type === 'select' && item.params && item.params.multiple && !item.params.noNeed)) {
             value = []
           }
           item.val = value
@@ -310,15 +319,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .form {
-    .w100 {
-      width: 100%;
-    }
-    ::v-deep .el-input-number .el-input__inner{
-      text-align: left;
-    }
-    ::v-deep .el-checkbox-group{
-      font-size: 1px
-    }
+.form {
+  .w100 {
+    width: 100%;
   }
+  ::v-deep .el-input-number .el-input__inner{
+    text-align: left;
+  }
+  ::v-deep .el-checkbox-group{
+    font-size: 1px
+  }
+}
 </style>
