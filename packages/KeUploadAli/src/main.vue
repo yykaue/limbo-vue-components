@@ -287,7 +287,7 @@ export default {
       })
       const newMultipartParams = {
         'Filename': 'console/',
-        'key': `${this.uploadAli.dirname || 'crm'}/${fileName}`,
+        'key': `${this.uploadAli.dirname || 'limbo'}/${fileName}`,
         'policy': this.policyBase64,
         'OSSAccessKeyId': this.uploadConfig.accessid,
         'success_action_status': '200',
@@ -482,8 +482,8 @@ export default {
         if (item.id === file.id) {
           this.uploadAli.uploadedList.push({
             ...item,
-            url: `${this.uploadConfig.resourceUrl}${this.uploadAli.dirname || 'crm'}/${item.fileName}`,
-            baseUrl: `${this.uploadAli.dirname || 'crm'}/${item.fileName}`
+            url: `${this.uploadConfig.resourceUrl}${this.uploadAli.dirname || 'limbo'}/${item.fileName}`,
+            baseUrl: `${this.uploadAli.dirname || 'limbo'}/${item.fileName}`
           })
           return true
         }
@@ -504,7 +504,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import '~limbo-common-css/lib/font-crm/iconfont.css';
+  @import '~limbo-common-css/lib/iconfont/iconfont.css';
 
   .uploadAli {
     .el-button {
