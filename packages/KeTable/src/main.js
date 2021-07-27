@@ -40,9 +40,15 @@ export default {
     } = ctx.props
 
     const loopCols = data => data.map((item, i) => {
+      let key
+      if (item.columnkey === false) {
+        key = `${+new Date()}${i}`
+      } else {
+        key = item.columnkey || item.prop || `${+new Date()}${i}`
+      }
       const params = {
         props: item,
-        key: item.columnkey || `${+new Date()}${i}`,
+        key,
         scopedSlots: {
           default: item.render ? props => item.render(h, props) : undefined,
           header: item.header ? props => item.header(h, props) : undefined
