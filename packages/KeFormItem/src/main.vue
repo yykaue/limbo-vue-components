@@ -3,43 +3,39 @@
   <el-form
       ref="form"
       class="form"
-      :label-width="formItem.labelWidth"
-      :label-position="formItem.labelPosition || 'right'"
-      :model="formItem.formList.constructor === Object ? formItem.formList : undefined"
+      v-bind="formItem.attrs"
+      :label-position="checkDefault(formItem, ['attrs', 'labelPosition'], 'right')"
+      :model="formList.constructor === Object ? formList : undefined"
       :rules="rules"
       @submit.native.prevent>
     <el-row :gutter="formItem.gutter || 0">
       <el-col
-          v-for="(item, i) in formItem.formList"
+          v-for="(item, i) in formList"
           :key="i"
           :span="item.span || formItem.span">
         <el-form-item
-            v-if="!item.disblock"
-            :label="item.name"
-            :prop="item.prop || `${i}.val`"
-            :required="item.required">
+            v-if="checkDefault(item, ['showIf'], true)"
+            v-bind="item.headerAttrs"
+            :label="item.name">
           <!--input-->
           <template v-if="item.type === 'input'">
             <el-input
                 v-model="item.val"
-                @keyup.enter.native="search"
-                :clearable="!(item.params && item.params.unClearable)"
-                :disabled="item.params && item.params.disabled"
-                :maxlength="item.maxlength"
-                :show-word-limit="item.showWordLimit"
-                :placeholder="`请输入${item.params ? (item.params.placeholder || '') : ''}`"></el-input>
+                v-bind="item.contentAttrs"
+                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+                @keyup.enter.native="search">
+            </el-input>
           </template>
           <!--textarea-->
           <template v-else-if="item.type === 'textarea'">
             <el-input
                 v-model="item.val"
-                @keyup.enter.native="search"
+                v-bind="item.contentAttrs"
                 type="textarea"
-                :disabled="item.params && item.params.disabled"
-                :maxlength="item.maxlength"
-                :show-word-limit="item.showWordLimit"
-                :placeholder="`请输入${item.params ? (item.params.placeholder || '') : ''}`"
-                :rows="item.rows">
+                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+                @keyup.enter.native="search">
             </el-input>
           </template>
           <!--input number-->
@@ -47,30 +43,30 @@
             <el-input-number
                 class="w100"
                 v-model="item.val"
-                @keyup.enter.native="search"
-                :controls="false"
-                :disabled="item.params && item.params.disabled"
-                :min="item.params && item.params.min || 0"
-                :max="item.params && item.params.max || 100000000000000000"
-                :placeholder="`请输入${item.params ? (item.params.placeholder || '') : ''}`"
-                :precision="item.params && item.params.precision || 0"></el-input-number>
+                v-bind="item.contentAttrs"
+                :controls="checkDefault(item, ['contentAttrs', 'controls'], false)"
+                :min="checkDefault(item, ['contentAttrs', 'min'], 0)"
+                :max="checkDefault(item, ['contentAttrs', 'max'], 100000000000000000)"
+                :precision="checkDefault(item, ['contentAttrs', 'precision'], 0)"
+                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+                @keyup.enter.native="search">
+            </el-input-number>
           </template>
           <!--select-->
           <template v-else-if="item.type === 'select'">
             <el-select
                 class="w100"
                 v-model="item.val"
+                v-bind="item.contentAttrs"
+                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+                :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
+                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
                 @change="val => selectChange(item, val)"
-                @keyup.enter.native="search"
-                :multiple="(item.params && item.params.multiple)"
-                :clearable="!(item.params && item.params.unClearable)"
-                :disabled="item.params && item.params.disabled"
-                :filterable="!(item.params && item.params.unfilterable)"
-                :placeholder="`请选择${item.params.placeholder || ''}`">
+                @keyup.enter.native="search">
               <el-option
                   v-for="(key, i) in options[item.params.option]"
                   :key="i"
-                  :disabled="key[item.params.optionDisable]"
+                  :disabled="key[item.params.optionDisabled]"
                   :label="key[item.params.optionVal]"
                   :value="key[item.params.optionKey]">
               </el-option>
@@ -80,9 +76,7 @@
           <template v-else-if="item.type === 'switch'">
             <el-switch
                 v-model="item.val"
-                :active-text="item.params && item.params.activeText"
-                :disabled="item.params && item.params.disabled"
-                :inactive-text="item.params && item.params.inactiveText">
+                v-bind="item.contentAttrs">
             </el-switch>
           </template>
           <!--cascader-->
@@ -90,11 +84,11 @@
             <el-cascader
                 class="w100"
                 v-model="item.val"
-                :clearable="!(item.params && item.params.unClearable)"
+                v-bind="item.contentAttrs"
                 :options="options[item.params.option]"
-                :props="item.params.props"
-                :filterable="!(item.params && item.params.unfilterable)"
-                :placeholder="`请选择${item.params.placeholder || ''}`"
+                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+                :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
+                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
                 @change="val => cascaderChange(item, val)"
                 @active-item-change="val => cascaderActive(item, val)">
             </el-cascader>
@@ -103,14 +97,14 @@
           <template v-else-if="item.type === 'radio'">
             <el-radio-group
                 v-model="item.val"
-                @change="val => radioChange(item, val)"
-                :disabled="item.params && item.params.disabled">
+                v-bind="item.contentAttrs"
+                @change="val => radioChange(item, val)">
               <el-radio
                   v-for="(key, i) in options[item.params.option]"
                   :key="i"
                   :label="key[item.params.optionKey]"
-                  :disabled="key.disabled">
-                {{key[item.params.optionVal]}}
+                  :disabled="key[item.params.optionDisabled]">
+                {{ key[item.params.optionVal] }}
               </el-radio>
             </el-radio-group>
           </template>
@@ -118,12 +112,13 @@
           <template v-else-if="item.type === 'checkBox'">
             <el-checkbox-group
                 v-model="item.val"
-                :disabled="item.params && item.params.disabled">
+                v-bind="item.contentAttrs">
               <el-checkbox
                   v-for="(key, i) in options[item.params.option]"
                   :key="i"
-                  :label="key[item.params.optionKey]">
-                {{key[item.params.optionVal]}}
+                  :label="key[item.params.optionKey]"
+                  :disabled="key[item.params.optionDisabled]">
+                {{ key[item.params.optionVal] }}
               </el-checkbox>
             </el-checkbox-group>
           </template>
@@ -131,22 +126,17 @@
           <template v-else-if="item.type === 'dateTimePicker' ">
             <el-date-picker
                 v-model="item.val"
-                @change="val => changeDateTimePicker(val, item)"
-                :align="item.params.align"
-                :clearable="item.params.clearable"
-                :default-time="item.params.defaultTime || (['daterange', 'datetimerange'].includes(item.params.type) ? [] : '')"
-                :disabled="item.params && item.params.disabled"
-                :editable="!item.params.uneditable"
-                :format="item.params.format || 'yyyy-MM-dd HH:mm:ss'"
-                :placeholder="`请选择${item.params.placeholder || ''}`"
-                :picker-options="item.pickerOptions || {}"
-                :style="item.params.style || `width: 100%`"
-                :type="item.params.type || 'date'"
-                :unlink-panels="item.params.type === 'daterange'"
-                :value-format="item.params.valueFormat"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
+                v-bind="item.contentAttrs"
+                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+                :editable="checkDefault(item, ['contentAttrs', 'editable'], false)"
+                :style="checkDefault(item, ['contentAttrs', 'style'], 'width:100%')"
+                :value-format="checkDefault(item, ['contentAttrs', 'valueFormat'], 'timestamp')"
+
+                :range-separator="checkDefault(item, ['contentAttrs', 'rangeSeparator'], '至')"
+                :start-placeholder="checkDefault(item, ['contentAttrs', 'startPlaceholder'], '开始日期')"
+                :end-placeholder="checkDefault(item, ['contentAttrs', 'endPlaceholder'], '结束日期')"
+                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
+                @change="val => changeDateTimePicker(val, item)">
             </el-date-picker>
           </template>
           <!--default-->
@@ -158,10 +148,12 @@
       <el-col
           v-if="formItem.btnObj"
           :span="formItem.btnObj.span || formItem.span">
-        <div :class="formItem.btnObj.className">
-          <el-button type="primary" @click="search">{{formItem.btnObj.name || '搜索'}}</el-button>
-          <el-button v-if="!formItem.btnObj.unReset" @click="reset">重置</el-button>
-        </div>
+        <slot>
+          <div :class="formItem.btnObj.className">
+            <el-button type="primary" @click="search">{{ formItem.btnObj.name || '搜索' }}</el-button>
+            <el-button v-if="!formItem.btnObj.unReset" @click="reset">重置</el-button>
+          </div>
+        </slot>
       </el-col>
     </el-row>
   </el-form>
@@ -184,9 +176,12 @@ import {
   Row,
   Select,
   Switch,
+  Message,
 } from 'element-ui'
+
 export default {
   name: 'KeFormItem',
+  inheritAttrs: false,
   components: {
     'el-button': Button,
     'el-checkbox': Checkbox,
@@ -205,113 +200,137 @@ export default {
     'el-switch': Switch,
   },
   props: {
-    options: {
+    formItem: {
       type: Object,
       default: () => ({})
     },
-    formItem: {
+    formList: [Object, Array],
+    options: {
       type: Object,
       default: () => ({})
     },
     rules: {
       type: Object,
       default: () => ({})
-    },
-    paging: {
-      type: Object,
-      default: () => ({
-        params: {
-          current: 1
-        }
-      })
     }
   },
   data () {
     return {}
   },
   computed: {},
-  mounted () {},
+  mounted () {
+  },
   methods: {
+    checkDefault (target, list = [], defaultVal) {
+      const payload = list.reduce((pre, cur, i, arr) => {
+        let backParams
+        if (pre[cur] === undefined) {
+          if (i === arr.length - 1) {
+            backParams = undefined
+          } else {
+            backParams = {}
+          }
+        } else {
+          backParams = pre[cur]
+        }
+        return backParams
+      }, target)
+      if (payload === 'limboUndefined') {
+        return undefined
+      }
+      return payload !== undefined ? payload : defaultVal
+    },
+    // --- emit start ---
     radioChange (item, val) {
       if (!this.$listeners.radioChange) {
         return
       }
-      this.paging.params.current = 1
-      this.$emit('radioChange', {
-        type: 'radioChange',
-        data: { item, val }
-      })
+      this.$emit('radioChange', { item, val })
     },
     selectChange (item, val) {
       if (!this.$listeners.selectChange) {
         return
       }
-      this.paging.params.current = 1
-      this.$emit('selectChange', {
-        type: 'selectChange',
-        data: { item, val }
-      })
+      this.$emit('selectChange', { item, val })
     },
     cascaderChange (item, val) {
-      this.$emit('cascaderChange', {
-        type: 'cascaderChange',
-        data: { item, val }
-      })
+      if (!this.$listeners.cascaderChange) {
+        return
+      }
+      this.$emit('cascaderChange', { item, val })
     },
     cascaderActive (item, val) {
-      this.$emit('cascaderActive', {
-        type: 'cascaderActive',
-        data: { item, val }
-      })
+      if (!this.$listeners.cascaderActive) {
+        return
+      }
+      this.$emit('cascaderActive', { item, val })
     },
     search () {
       if (!this.$listeners.search) {
         return
       }
-      this.paging.params.current = 1
-      this.$emit('search', {
-        type: 'search',
-        data: null
-      })
-      // 兼容以前code
-      this.$emit('propsFn', {
-        type: 'formItemSearch',
-        data: null
-      })
+      this.$emit('search')
     },
     reset () {
-      this.paramsReset()
-      this.$emit('reset', {
-        type: 'reset',
-        data: null
+      this.resetParams()
+      this.$emit('reset')
+      Message({
+        message: '条件已重置',
+        type: 'success',
+        duration: 2000
       })
-      this.$tools.message('条件已重置')
     },
+    // --- emit end ---
     changeDateTimePicker (val, item) {
       if (!val) {
         setTimeout(() => {
-          item.val = undefined
-        })
-      }
-    },
-    paramsReset () {
-      let list = this.formItem.formList
-      if (list.constructor === Array) {
-        list.forEach(item => {
           let value = undefined
-          if (item.type === 'checkBox'
-              || (item.type === 'dateTimePicker' && ['daterange', 'datetimerange'].includes(item.params.type))
-              || (item.type === 'select' && item.params && item.params.multiple && !item.params.noNeed)) {
+          if (this.checkValueType(item)) {
             value = []
           }
           item.val = value
         })
-      } else if (list.constructor === Object) {
-        // Object 可用 存疑 遍历时用的v-for="item in list"
-        Object.keys(list).forEach(item => {
-          list[item].val = undefined
-        })
       }
+    },
+    checkValueType (item) {
+      return item.type === 'checkBox'
+          || item.type === 'dateTimePicker' && item.contentAttrs && item.contentAttrs.type && item.contentAttrs.type.includes('range')
+          || item.type === 'select' && item.contentAttrs && item.contentAttrs.multiple
+    },
+
+    /**
+     *
+     * @param exceptValList 需要被过滤的value type: Array exceptKeyList = ['']
+     * @param exceptItemList 需要被过滤的formList属性 type: Array exceptItemList = [{ key: 'val', val: [undefined] }]
+     */
+    getParams (exceptValList = [''], exceptItemList = []) {
+      const params = {}
+      this.formList.forEach(item => {
+        const keyFlag = exceptValList.includes(item.val)
+        const itemFlag = exceptItemList.some(_item => _item.val.includes(item[_item.key]))
+
+        if (item.val !== undefined && !keyFlag && !itemFlag) {
+          params[item.key] = item.val
+        }
+      })
+      return params
+    },
+    resetParams () {
+      this.formList.forEach(item => {
+        let value = undefined
+        if (this.checkValueType(item)) {
+          value = []
+        }
+        item.val = value
+      })
+    },
+    setParams (params) {
+      // hasOwnProperty
+      this.formList.forEach(item => {
+        if (params.hasOwnProperty(item.name)) {
+          item.val = params[item.name]
+        }
+      })
     }
   }
 }
@@ -323,10 +342,12 @@ export default {
   .w100 {
     width: 100%;
   }
-  ::v-deep .el-input-number .el-input__inner{
+
+  ::v-deep .el-input-number .el-input__inner {
     text-align: left;
   }
-  ::v-deep .el-checkbox-group{
+
+  ::v-deep .el-checkbox-group {
     font-size: 1px
   }
 }

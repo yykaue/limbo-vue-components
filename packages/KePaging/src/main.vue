@@ -2,15 +2,15 @@
 <template>
   <el-pagination
       class="paging"
-      @size-change="sizeChange"
-      @current-change="currentChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      :current-page.sync="paging.params.current"
-      :page-sizes="paging.pageSizes || pageSizes"
-      :page-size="paging.params.pageSize"
-      :layout="paging.layout || layout"
-      :total="paging.total">
+      v-bind="$attrs"
+      v-on="$listeners"
+      :current-page.sync="params.current"
+      :page-size.sync="params.pageSize"
+      :page-sizes="pageSizes"
+      :layout="layout"
+      @size-change="onSizeChange"
+      @current-change="onCurrentChange">
+    <slot />
   </el-pagination>
 </template>
 
@@ -20,64 +20,38 @@ import {
 } from 'element-ui'
 export default {
   name: 'KePaging',
+  inheritAttrs: false,
   components: {
     'el-pagination': Pagination
   },
-  // inheritAttrs: false,
   props: {
-    paging: {
+    params: {
       type: Object,
       default: () => ({
-        params: {
-          current: 1,
-          pageSize: 10
-        },
-        pageSizes: [10, 25, 50],
-        layout: 'total, sizes, prev, pager, next, jumper',
-        total: 0
+        current: 1,
+        pageSize: 10
       })
+    },
+    pageSizes: {
+      type: Array,
+      default: () => ([10, 25, 50])
+    },
+    layout: {
+      type: String,
+      default: '->, total, sizes, prev, pager, next, jumper'
     }
   },
-  data () {
-    return {
-      pageSizes: [10, 25, 50],
-      layout: 'total, sizes, prev, pager, next, jumper'
-    }
-  },
-  mounted () {},
   methods: {
     // size改变
-    sizeChange (val) {
-      this.paging.params.pageSize = val
-      this.paging.params.current = 1
-      this.currentChange(val)
+    onSizeChange (val) {
+      this.params.current = 1
+      this.onCurrentChange()
     },
     // currentPage改变
-    currentChange (val) {
-      this.$emit('currentChange', {
-        type: 'currentPage',
-        data: null
-      })
-    },
-    // prevClick click
-    prevClick (val) {
-      // console.log('prev',val)
-    },
-    // nextClick click
-    nextClick (val) {
-      // console.log('next',val)
+    onCurrentChange (val) {
+      this.$emit('currentPage')
     }
   }
 }
 
 </script>
-
-<style scoped lang="scss">
-  .paging {
-    text-align: right;
-    margin-top: 10px;
-    ::v-deep .el-input__inner {
-      height: 28px !important;
-    }
-  }
-</style>
