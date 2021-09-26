@@ -8,6 +8,8 @@ import KeCheckVersion from './packages/KeCheckVersion'
 import KeColumn from './packages/KeColumn'
 import KeEditor from './packages/KeEditor'
 import KeFormItem from './packages/KeFormItem'
+import KeFormModel from './packages/KeFormModel'
+
 import KePaging from './packages/KePaging'
 import KeQrCode from './packages/KeQrCode'
 import KeSidebar from './packages/KeSidebar'
@@ -24,6 +26,7 @@ const components = {
   KeColumn,
   KeEditor,
   KeFormItem,
+  KeFormModel,
   KePaging,
   KeQrCode,
   KeSidebar,
@@ -55,6 +58,7 @@ export {
   KeColumn,
   KeEditor,
   KeFormItem,
+  KeFormModel,
   KePaging,
   KeQrCode,
   KeSidebar,

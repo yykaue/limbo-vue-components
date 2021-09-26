@@ -41,10 +41,10 @@ export default {
 
     const loopCols = data => data.map((item, i) => {
       let key
-      if (item.columnkey === false) {
+      if (item.columnKey === false) {
         key = `${+new Date()}${i}`
       } else {
-        key = item.columnkey || item.prop || `${+new Date()}${i}`
+        key = item.columnKey || item.prop || `${+new Date()}${i}`
       }
       const params = {
         props: item,

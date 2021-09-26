@@ -1,9 +1,12 @@
-<!-- Created by limbo <yykaue@qq.com> on 2019/7/23. -->
+<!-- Created by limbo <yykaue@qq.com> on 2021/9/10. -->
 <template>
   <el-form
       ref="form"
       class="form"
       v-bind="formItem.attrs"
+      v-loading="loading"
+      :model="model"
+      :rules="rules"
       :label-position="checkDefault(formItem, ['attrs', 'labelPosition'], 'right')"
       @submit.native.prevent>
     <el-row :gutter="formItem.gutter || 0">
@@ -13,11 +16,12 @@
           :span="item.span || formItem.span">
         <el-form-item
             v-bind="item.headerAttrs"
+            :prop="item.headerAttrs && item.headerAttrs.prop || item.key"
             :label="item.name">
           <!--input-->
           <template v-if="item.type === 'input'">
             <el-input
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs"
                 :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
                 :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
@@ -27,7 +31,7 @@
           <!--textarea-->
           <template v-else-if="item.type === 'textarea'">
             <el-input
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs"
                 type="textarea"
                 :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
@@ -39,7 +43,7 @@
           <template v-else-if="item.type === 'inputNumber'">
             <el-input-number
                 class="w100"
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs"
                 :controls="checkDefault(item, ['contentAttrs', 'controls'], false)"
                 :min="checkDefault(item, ['contentAttrs', 'min'], 0)"
@@ -53,7 +57,7 @@
           <template v-else-if="item.type === 'select'">
             <el-select
                 class="w100"
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs"
                 :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
                 :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
@@ -72,7 +76,7 @@
           <!--switch-->
           <template v-else-if="item.type === 'switch'">
             <el-switch
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs">
             </el-switch>
           </template>
@@ -80,7 +84,7 @@
           <template v-else-if="item.type === 'cascader'">
             <el-cascader
                 class="w100"
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs"
                 :options="options[item.params.option]"
                 :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
@@ -93,7 +97,7 @@
           <!--radio-->
           <template v-else-if="item.type === 'radio'">
             <el-radio-group
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs"
                 @change="val => radioChange(item, val)">
               <el-radio
@@ -108,7 +112,7 @@
           <!--checkBox-->
           <template v-else-if="item.type === 'checkBox'">
             <el-checkbox-group
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs">
               <el-checkbox
                   v-for="(key, i) in options[item.params.option]"
@@ -122,7 +126,7 @@
           <!--dateTimePicker-->
           <template v-else-if="item.type === 'dateTimePicker' ">
             <el-date-picker
-                v-model="item.val"
+                v-model="model[item.key]"
                 v-bind="item.contentAttrs"
                 :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
                 :editable="checkDefault(item, ['contentAttrs', 'editable'], false)"
@@ -146,20 +150,22 @@
           v-if="formItem.btnObj"
           :span="formItem.btnObj.span || formItem.span">
         <el-form-item
-            v-bind="formItem.btnObj.attrs"
-            :label-width="checkDefault(formItem.btnObj, ['attrs', 'labelWidth'], '0px')">
+            v-bind="formItem.btnObj.attrs">
           <slot>
             <div :class="formItem.btnObj.className">
               <el-button
-                  v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('search')"
+                  v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('save')"
+                  v-bind="formItem.btnObj.saveAttrs"
+                  :loading="saveLoading"
                   type="primary"
-                  @click="search">
-                {{ formItem.btnObj.searchName || '搜索' }}
+                  @click="save">
+                {{ formItem.btnObj.saveName || '确 定' }}
               </el-button>
               <el-button
-                  v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('reset')"
-                  @click="reset">
-                {{ formItem.btnObj.resetName || '重置' }}
+                  v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('cancel')"
+                  v-bind="formItem.btnObj.cancelAttrs"
+                  @click="cancel">
+                {{ formItem.btnObj.cancelName || '取 消' }}
               </el-button>
             </div>
           </slot>
@@ -190,7 +196,7 @@ import {
 } from 'element-ui'
 
 export default {
-  name: 'KeFormItem',
+  name: 'KeFormModel',
   inheritAttrs: false,
   components: {
     'el-button': Button,
@@ -210,6 +216,14 @@ export default {
     'el-switch': Switch
   },
   props: {
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    saveLoading: {
+      type: Boolean,
+      default: false
+    },
     formItem: {
       type: Object,
       default: () => ({
@@ -220,6 +234,14 @@ export default {
       })
     },
     formList: [Object, Array],
+    model: {
+      type: Object,
+      default: () => ({})
+    },
+    rules: {
+      type: Object,
+      default: () => ({})
+    },
     options: {
       type: Object,
       default: () => ({})
@@ -280,22 +302,16 @@ export default {
       }
       this.$emit('cascaderActive', { item, val })
     },
-    search () {
-      if (!this.$listeners.search) {
-        return
-      }
-      this.$emit('search')
-    },
-    reset () {
-      this.resetParams()
-      this.$emit('reset')
-      Message({
-        message: '条件已重置',
-        type: 'success',
-        duration: 2000
+    save () {
+      this.submitForm(() => {
+        this.$emit('save')
       })
     },
+    cancel () {
+      this.$emit('cancel')
+    },
     // --- emit end ---
+
     changeDateTimePicker (val, item) {
       if (!val) {
         setTimeout(() => {
@@ -312,40 +328,21 @@ export default {
           (item.type === 'dateTimePicker' && item.contentAttrs && item.contentAttrs.type && item.contentAttrs.type.includes('range')) ||
           (item.type === 'select' && item.contentAttrs && item.contentAttrs.multiple)
     },
-
-    /**
-     *
-     * @param exceptValList 需要被过滤的value type: Array exceptKeyList = ['']
-     * @param exceptItemList 需要被过滤的formList属性 type: Array exceptItemList = [{ key: 'val', val: [undefined] }]
-     */
-    getParams (exceptValList = [''], exceptItemList = []) {
-      const params = {}
-      this.formList.forEach(item => {
-        const keyFlag = exceptValList.includes(item.val)
-        const itemFlag = exceptItemList.some(_item => _item.val.includes(item[_item.key]))
-
-        if (item.val !== undefined && !keyFlag && !itemFlag) {
-          params[item.key] = item.val
+    submitForm (cb) {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          cb && cb()
+        } else {
+          Message({
+            message: '请检查页面校验项',
+            type: 'error',
+            duration: 3000
+          })
         }
-      })
-      return params
-    },
-    resetParams () {
-      this.formList.forEach(item => {
-        let value
-        if (this.checkValueType(item)) {
-          value = []
-        }
-        item.val = value
       })
     },
-    setParams (params) {
-      // hasOwnProperty
-      this.formList.forEach(item => {
-        if (params.hasOwnProperty(item.name)) {
-          item.val = params[item.name]
-        }
-      })
+    resetForm () {
+      this.$refs.form.resetFields()
     }
   }
 }

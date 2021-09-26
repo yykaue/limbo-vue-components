@@ -49,7 +49,7 @@ export default {
     },
     // currentPage改变
     onCurrentChange (val) {
-      this.$emit('currentPage')
+      this.$emit('currentPage', val)
     }
   }
 }
