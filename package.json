@@ -1,6 +1,6 @@
 {
   "name": "limbo-vue-components",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "通用组件库",
   "main": "index.js",
   "dependencies": {
@@ -16,7 +16,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "patch": "yarn version --patch && git push origin master && git push origin --tags && npm publish",
+    "minor": "yarn version --minor && git push origin master && git push origin --tags && npm publish",
+    "major": "yarn version --major && git push origin master && git push origin --tags && npm publish"
   },
   "keywords": [
     "JS"
