@@ -12,7 +12,7 @@
     <el-row :gutter="formItem.gutter || 0">
       <el-col
           v-for="(item, i) in formListFilter"
-          :key="i"
+          :key="item.key || i"
           :span="item.span || formItem.span">
         <el-form-item
             v-bind="item.headerAttrs"
