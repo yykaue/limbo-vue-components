@@ -132,13 +132,24 @@
                 :editable="checkDefault(item, ['contentAttrs', 'editable'], false)"
                 :style="checkDefault(item, ['contentAttrs', 'style'], 'width:100%')"
                 :value-format="checkDefault(item, ['contentAttrs', 'valueFormat'], 'timestamp')"
-
                 :range-separator="checkDefault(item, ['contentAttrs', 'rangeSeparator'], '至')"
                 :start-placeholder="checkDefault(item, ['contentAttrs', 'startPlaceholder'], '开始日期')"
                 :end-placeholder="checkDefault(item, ['contentAttrs', 'endPlaceholder'], '结束日期')"
                 :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
                 @change="val => changeDateTimePicker(val, item)">
             </el-date-picker>
+          </template>
+          <!--button-->
+          <template v-else-if="item.type === 'button' ">
+            <el-button
+              v-bind="item.contentAttrs"
+              @click="buttonClick(item)">
+              {{item.params.label}}
+            </el-button>
+          </template>
+          <!--text-->
+          <template v-else-if="item.type === 'text' ">
+            <span>{{model[item.key]}}</span>
           </template>
           <!--default-->
           <template v-else>
@@ -301,6 +312,9 @@ export default {
         return
       }
       this.$emit('cascaderActive', { item, val })
+    },
+    buttonClick (item) {
+      this.$emit('buttonClick', { item })
     },
     save () {
       this.submitForm(() => {
