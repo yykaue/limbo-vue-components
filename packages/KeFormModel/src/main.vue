@@ -263,7 +263,15 @@ export default {
   },
   computed: {
     formListFilter () {
-      return this.formList.filter(item => this.checkDefault(item, ['showIf'], true))
+      return this.formList.filter(item => {
+        if (item.visible && item.visible.constructor === Function) {
+          return item.visible(this.model)
+        } else if (item.visible === undefined) {
+          return true
+        } else {
+          return item.visible
+        }
+      })
     }
   },
   mounted () {
