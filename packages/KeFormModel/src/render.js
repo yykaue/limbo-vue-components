@@ -22,8 +22,7 @@ export default {
     if (Item.render) {
       return Item.render(h, Model)
     } else {
-      return h('span', Model[Item.key] ?? '-')
+      return h('span', [null, undefined, ''].includes(Model[Item.key]) ? '-' : Model[Item.key])
     }
   }
 }
-  
