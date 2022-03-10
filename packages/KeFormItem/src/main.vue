@@ -136,6 +136,10 @@
                 @change="val => changeDateTimePicker(val, item)">
             </el-date-picker>
           </template>
+          <!-- render -->
+          <template v-else-if="item.type === 'render'">
+            <RenderItem :item="item" />
+          </template>
           <!--default-->
           <template v-else>
             <span>无此类型</span>
@@ -188,6 +192,7 @@ import {
   Switch,
   Message
 } from 'element-ui'
+import RenderItem from './render'
 
 export default {
   name: 'KeFormItem',
@@ -207,7 +212,8 @@ export default {
     'el-radio-group': RadioGroup,
     'el-row': Row,
     'el-select': Select,
-    'el-switch': Switch
+    'el-switch': Switch,
+    RenderItem
   },
   props: {
     formItem: {
@@ -230,7 +236,15 @@ export default {
   },
   computed: {
     formListFilter () {
-      return this.formList.filter(item => this.checkDefault(item, ['showIf'], true))
+      return this.formList.filter(item => {
+        if (item.visible && item.visible.constructor === Function) {
+          return item.visible()
+        } else if (item.visible === undefined) {
+          return true
+        } else {
+          return item.visible
+        }
+      })
     }
   },
   mounted () {

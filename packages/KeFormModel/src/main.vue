@@ -149,7 +149,7 @@
           </template>
           <!--text-->
           <template v-else-if="item.type === 'text' ">
-            <span>{{model[item.key]}}</span>
+            <RenderItem :model="model" :item="item" />
           </template>
           <!--default-->
           <template v-else>
@@ -205,6 +205,7 @@ import {
   Switch,
   Message
 } from 'element-ui'
+import RenderItem from './render'
 
 export default {
   name: 'KeFormModel',
@@ -224,7 +225,8 @@ export default {
     'el-radio-group': RadioGroup,
     'el-row': Row,
     'el-select': Select,
-    'el-switch': Switch
+    'el-switch': Switch,
+    RenderItem
   },
   props: {
     loading: {
