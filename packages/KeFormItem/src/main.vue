@@ -356,8 +356,8 @@ export default {
     setParams (params) {
       // hasOwnProperty
       this.formList.forEach(item => {
-        if (params.hasOwnProperty(item.name)) {
-          item.val = params[item.name]
+        if (params.hasOwnProperty(item.key)) {
+          item.val = params[item.key]
         }
       })
     }
