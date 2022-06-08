@@ -1,13 +1,13 @@
 <!-- Created by limbo <yykaue@qq.com> on 2020/10/12. -->
-<template></template>
+<template>
+  <span />
+</template>
+
 <script>
-/**
- *Created by limbo <yykaue@qq.com> on 2020/10/18.
- */
 import {
   MessageBox
 } from 'element-ui'
-import versionCheck from "./versionCheck"
+import versionCheck from './versionCheck'
 
 export default {
   name: 'KeCheckVersion',
@@ -48,15 +48,13 @@ export default {
         path: path
       })
     },
-    findNewVersion (params) {
+    findNewVersion (payload) {
       if (this.onEmit) {
-        this.$emit('findVersion', params)
+        this.$emit('findVersion', payload)
         return
       }
-      clearInterval(params.times)
-      MessageBox.alert(`<p>请点击 <span class="red">确定</span> 更新系统，如不更新可能造成数据错误，请知悉</p>`, {
-        title: '发现新版本',
-        dangerouslyUseHTMLString: true,
+      clearInterval(payload.times)
+      MessageBox.alert('请点击 <确定> 更新系统，如不更新可能造成数据错误，请知悉', '发现新版本', {
         lockScroll: false,
         confirmButtonText: '确定',
         callback: action => {
@@ -67,8 +65,7 @@ export default {
           }
         }
       })
-    },
+    }
   }
 }
-
 </script>
