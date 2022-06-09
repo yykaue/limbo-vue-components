@@ -18,7 +18,7 @@ import KeTable from './packages/KeTable'
 import KeToBack from './packages/KeToBack'
 import KeUnfinished from './packages/KeUnfinished'
 import KeUploadAli from './packages/KeUploadAli'
-import KeVideo from './packages/KeVideo'
+// import KeVideo from './packages/KeVideo'
 
 const components = {
   KeAudioFix,
@@ -35,7 +35,7 @@ const components = {
   KeToBack,
   KeUnfinished,
   KeUploadAli,
-  KeVideo
+  // KeVideo
 }
 
 const install = (Vue, options = {}) => {
@@ -67,7 +67,7 @@ export {
   KeToBack,
   KeUnfinished,
   KeUploadAli,
-  KeVideo
+  // KeVideo
 }
 export default {
   install,
