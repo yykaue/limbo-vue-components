@@ -24,13 +24,17 @@ export default {
       type: Boolean,
       default: process.env.NODE_ENV !== 'development'
     },
+    hashKey: {
+      type: String,
+      default: 'hash'
+    },
+    silenceKey: {
+      type: String,
+      default: 'silence'
+    },
     timeout: {
       type: Number,
       default: 30 * 1000
-    },
-    onEmit: {
-      type: Boolean,
-      default: false
     }
   },
   mounted () {
@@ -44,12 +48,17 @@ export default {
         cb: this.findNewVersion,
         timeout: this.timeout,
         license: this.license,
+        hashKey: this.hashKey,
         url: this.url,
-        path: path
+        path
       })
     },
-    findNewVersion (payload) {
-      if (this.onEmit) {
+    findNewVersion (payload = {}) {
+      const { JSONInfo = {} } = payload
+      if (JSONInfo[this.silenceKey] === 'true') {
+        return
+      }
+      if (this.$listeners.findVersion) {
         this.$emit('findVersion', payload)
         return
       }

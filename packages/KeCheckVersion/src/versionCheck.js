@@ -8,7 +8,7 @@ function versionCheck ({
   path,
   license,
   timeout = 5 * 60 * 1000,
-  key = 'hash',
+  hashKey = 'hash',
   cb
 }) {
   const times = setInterval(() => {
@@ -37,12 +37,12 @@ function versionCheck ({
       }
 
       const flag = Array.from(sc).some(item => {
-        if (item.src && item.src.includes(JSONInfo[key])) {
+        if (item.src && item.src.includes(JSONInfo[hashKey])) {
           return true
         }
       })
       if (!flag) {
-        const params = { xhr, response, times }
+        const params = { xhr, response, times, JSONInfo }
         cb && cb(params)
       }
     }
