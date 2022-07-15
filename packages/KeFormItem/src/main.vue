@@ -6,7 +6,7 @@
       v-bind="formItem.attrs"
       :label-position="checkDefault(formItem, ['attrs', 'labelPosition'], 'right')"
       @submit.native.prevent>
-    <el-row :gutter="formItem.gutter || 0">
+    <el-row :gutter="formItem.gutter || 0" class="row-wrap">
       <el-col
           v-for="(item, i) in formListFilter"
           :key="i"
@@ -370,6 +370,10 @@ export default {
 .form {
   .w100 {
     width: 100%;
+  }
+  .row-wrap{
+    display: flex;
+    flex-wrap: wrap;
   }
 
   ::v-deep .el-input-number .el-input__inner {
