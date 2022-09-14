@@ -18,6 +18,9 @@
             v-bind="item.headerAttrs"
             :prop="item.headerAttrs && item.headerAttrs.prop || item.key"
             :label="item.name">
+          <template v-if="item.renderLabel" v-slot:label>
+            <RenderLabel :model="model" :item="item" />
+          </template>
           <!--input-->
           <template v-if="item.type === 'input'">
             <el-input
@@ -205,6 +208,7 @@ import {
   Switch,
   Message
 } from 'element-ui'
+import RenderLabel from './renderLabel'
 import RenderItem from './render'
 
 export default {
@@ -226,6 +230,7 @@ export default {
     'el-row': Row,
     'el-select': Select,
     'el-switch': Switch,
+    RenderLabel,
     RenderItem
   },
   props: {
