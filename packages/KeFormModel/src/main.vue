@@ -154,6 +154,15 @@
           <template v-else-if="item.type === 'text' ">
             <RenderItem :model="model" :item="item" />
           </template>
+          <!--renderJson-->
+          <template v-else-if="item.type === 'renderJson' ">
+            <RenderJson
+              :vue="$parent"
+              :model="model"
+              :options="options"
+              :item="item"
+              :props="item.props"/>
+          </template>
           <!--default-->
           <template v-else>
             <span>无此类型</span>
@@ -168,7 +177,7 @@
           <slot>
             <div :class="formItem.btnObj.className">
               <el-button
-                  v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('save')"
+                  v-if="(!formItem.btnObj.showList || formItem.btnObj.showList.includes('save'))"
                   v-bind="formItem.btnObj.saveAttrs"
                   :loading="saveLoading"
                   type="primary"
@@ -176,7 +185,7 @@
                 {{ formItem.btnObj.saveName || '确 定' }}
               </el-button>
               <el-button
-                  v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('cancel')"
+                  v-if="(!formItem.btnObj.showList || formItem.btnObj.showList.includes('cancel'))"
                   v-bind="formItem.btnObj.cancelAttrs"
                   @click="cancel">
                 {{ formItem.btnObj.cancelName || '取 消' }}
@@ -208,8 +217,9 @@ import {
   Switch,
   Message
 } from 'element-ui'
-import RenderLabel from './renderLabel'
 import RenderItem from './render'
+import RenderJson from './renderJson'
+import RenderLabel from './renderLabel'
 
 export default {
   name: 'KeFormModel',
@@ -230,8 +240,10 @@ export default {
     'el-row': Row,
     'el-select': Select,
     'el-switch': Switch,
+   
+    RenderItem,
+    RenderJson,
     RenderLabel,
-    RenderItem
   },
   props: {
     loading: {
