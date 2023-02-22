@@ -29,14 +29,6 @@ export default {
   },
   render: (h, ctx) => {
     const Props = ctx.props
-    const {
-      dom: topDom, // dom标签
-      options: topOptions, // options: { keys: 'option.obj', params: { 'label': 'a.b.c', 'value': 'd.e.f',} }
-      attribute: topAttribute = { props: {} }, // vm的支持的attribute
-      props: topProps = {}, // props: { aa: { source: 'model', keys: 'a.b', vModel: true } }
-      on: topOn, // on: { change: { emit: 'emit', onFn: 'fn', vModel: true, source: 'model', keys: 'value' } }
-      children: topChildren = []
-    } = Props.item.render || {}
 
     const splitDot = (keyStr, paramsObj) => keyStr.split('.').reduce((pre, cur) => pre[cur], paramsObj)
     // 内部props
@@ -64,6 +56,7 @@ export default {
       for (const key in _on) {
         const keyItem = _on[key]
         _onParams[key] = (...arg) => {
+          // TODO 可不指定 Props下固定属性
           Props.vue[keyItem.onFn]({
             type: keyItem.emit,
             payload: arg
@@ -86,21 +79,23 @@ export default {
       return _onParams
     }
 
-    const loopDom = domList => domList.map((_ctx, _index) => {
+    const loopDom = (_ctx, _indexKey) => {
       const {
+        domIf: _domIf, // dom是否渲染 domIf: { source: 'model', keys: 'a.b' }
         dom: _dom, // dom标签
         options: _options, // options: { keys: 'option.obj', params: { 'label': 'a.b.c', 'value': 'd.e.f',} }
         attribute: _attribute = { props: {} }, // vm的支持的attribute
         props: _props = {}, // props: { aa: { source: 'model', keys: 'a.b', vModel: true } }
-        on: _on, // on: { change: { emit: 'emit', onFn: 'fn', vModel: true, source: 'model', keys: 'value' } }
+        on: _on, // on: { change: { emit: 'emitStr', onFn: 'fnStr', vModel: true, source: 'model', keys: 'value' } }
         children: _children
       } = _ctx
-      // 内部key
-      _attribute.key = _attribute.key || `${+new Date()}${_dom}${_index}`
+      if (_domIf && !splitDot(_domIf.keys, Props[_domIf.source])) {
+        return undefined
+      }
 
+      const _domKey = _attribute.key || _indexKey
       const _domProps = getAttrsProps(_attribute, _props)
-      const _domOn = getAttrsProps(_attribute, _props)
-      getAttrsOn(_attribute, _on)
+      const _domOn = getAttrsOn(_attribute, _on)
 
       // options迭代
       if (_options) {
@@ -112,45 +107,45 @@ export default {
           return h(_dom, {
               ..._attribute,
               props: {
-                ...topAttribute.props,
+                ..._attribute.props,
                 ..._domProps,
                 ..._propsOption
               },
               on: {
-                ...topAttribute.on,
+                ..._attribute.on,
                 ..._domOn
               },
-              key: `${+new Date()}${_dom}${_index}${_i}`
-            }, _item.children ? loopDom(_item.children) : undefined
+              key: `${+new Date()}${_dom}${_i}`
+            }, loopChild(_item.children)
           )
         })
       }
-      // children迭代
-      return h(_dom, {
-          ..._attribute,
-          props: {
-            ...topAttribute.props,
-            ..._domProps
-          },
-          on: {
-            ...topAttribute.on,
-            ..._domOn
-          },
-        }, _children ? loopDom(_children) : undefined)
-    })
 
-    const domProps = getAttrsProps(getAttrsProps, topProps)
-    const domOn = getAttrsOn(topAttribute, topOn)
-    return Props.item.render ? h(topDom, {
-      ...topAttribute,
-      props: {
-        ...topAttribute.props,
-        ...domProps
-      },
-      on: {
-        ...topAttribute.on,
-        ...domOn
+      return h(_dom, {
+        ..._attribute,
+        props: {
+          ..._attribute.props,
+          ..._domProps
+        },
+        on: {
+          ..._attribute.on,
+          ..._domOn
+        },
+        key: _domKey
+      }, loopChild(_children))
+    }
+    const loopChild = (_ctx, _indexKey) => {
+      if (!_ctx) {
+        return undefined
       }
-    }, loopDom(topChildren)) : h('span', '-')
+      return _ctx.map(_item => {
+        if (_item.constructor !== Object) {
+          return _item
+        } else {
+          return loopDom(_item, `${+new Date()}${_indexKey}`)
+        }
+      })
+    }
+    return Props.item.render ? loopDom(Props.item.render) : h('span', '-')
   }
 }
