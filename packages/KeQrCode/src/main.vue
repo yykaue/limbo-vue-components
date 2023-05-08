@@ -1,6 +1,6 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/7/18. -->
 <template>
-  <canvas ref="qrCode"></canvas>
+  <canvas ref="qrCode" />
 </template>
 
 <script>

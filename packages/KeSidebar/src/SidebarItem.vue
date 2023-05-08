@@ -1,34 +1,69 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/7/23. -->
 <template>
-  <div v-if="!item.hidden&&item.children" class="menu-wrapper">
-
+  <div
+    v-if="!item.hidden&&item.children"
+    class="menu-wrapper"
+  >
     <template v-if="hasOneShowingChild(item.children) && !onlyOneChild.children&&!item.alwaysShow">
-      <a :href="onlyOneChild.path" target="_blank" @click="clickLink(onlyOneChild,$event)">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <Item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon" :title="onlyOneChild.meta.title"/>
+      <a
+        :href="onlyOneChild.path"
+        target="_blank"
+        @click="clickLink(onlyOneChild,$event)"
+      >
+        <el-menu-item
+          :index="resolvePath(onlyOneChild.path)"
+          :class="{'submenu-title-noDropdown':!isNest}"
+        >
+          <Item
+            v-if="onlyOneChild.meta"
+            :icon="onlyOneChild.meta.icon"
+            :title="onlyOneChild.meta.title"
+          />
         </el-menu-item>
       </a>
     </template>
 
-    <el-submenu v-else :index="item.name||item.path">
+    <el-submenu
+      v-else
+      :index="item.name||item.path"
+    >
       <template slot="title">
-        <Item v-if="item.meta" :icon="item.meta.icon" :title="item.meta.title"/>
+        <Item
+          v-if="item.meta"
+          :icon="item.meta.icon"
+          :title="item.meta.title"
+        />
       </template>
 
       <template v-for="(child, i) in item.children">
         <template v-if="!child.hidden">
-          <SidebarItem v-if="child.children&&child.children.length>0" :is-nest="true" :item="child" :key="child.path ? (child.path + i) : i"
-                        :base-path="resolvePath(child.path)" class="nest-menu"/>
+          <SidebarItem
+            v-if="child.children&&child.children.length>0"
+            :is-nest="true"
+            :item="child"
+            :key="child.path ? (child.path + i) : i"
+            :base-path="resolvePath(child.path)"
+            class="nest-menu"
+          />
 
-          <a v-else :href="child.path" :key="child.name ? (child.name + i) : i" target="_blank" @click="clickLink(child,$event)">
+          <a
+            v-else
+            :href="child.path"
+            :key="child.name ? (child.name + i) : i"
+            target="_blank"
+            @click="clickLink(child,$event)"
+          >
             <el-menu-item :index="resolvePath(child.path)">
-              <Item v-if="child.meta" :icon="child.meta.icon" :title="child.meta.title"/>
+              <Item
+                v-if="child.meta"
+                :icon="child.meta.icon"
+                :title="child.meta.title"
+              />
             </el-menu-item>
           </a>
         </template>
       </template>
     </el-submenu>
-
   </div>
 </template>
 

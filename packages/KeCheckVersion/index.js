@@ -4,8 +4,8 @@
 import KeCheckVersion from './src/main'
 // const KeCheckVersion = () => import('./src/main')
 
-KeCheckVersion.install = function(Vue) {
+KeCheckVersion.install = function (Vue) {
   Vue.component(KeCheckVersion.name, KeCheckVersion)
-};
+}
 
 export default KeCheckVersion

@@ -4,8 +4,8 @@
 import KeColumn from './src/main'
 // const KeColumn = () => import('./src/main')
 
-KeColumn.install = function(Vue) {
+KeColumn.install = function (Vue) {
   Vue.component(KeColumn.name, KeColumn)
-};
+}
 
 export default KeColumn

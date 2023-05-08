@@ -1,106 +1,115 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/7/23. -->
 <template>
   <el-form
-      ref="form"
-      class="form"
-      v-bind="formItem.attrs"
-      :label-position="checkDefault(formItem, ['attrs', 'labelPosition'], 'right')"
-      @submit.native.prevent>
-    <el-row :gutter="formItem.gutter || 0" class="row-wrap">
+    ref="form"
+    class="form"
+    v-bind="formItem.attrs"
+    :label-position="checkDefault(formItem, ['attrs', 'labelPosition'], 'right')"
+    @submit.native.prevent
+  >
+    <el-row
+      :gutter="formItem.gutter || 0"
+      class="row-wrap"
+    >
       <el-col
-          v-for="(item, i) in formListFilter"
-          :key="i"
-          :span="item.span || formItem.span">
+        v-for="(item, i) in formListFilter"
+        :key="i"
+        :span="item.span || formItem.span"
+      >
         <el-form-item
-            v-bind="item.headerAttrs"
-            :label="item.name">
+          v-bind="item.headerAttrs"
+          :label="item.name"
+        >
           <!--input-->
           <template v-if="item.type === 'input'">
             <el-input
-                v-model="item.val"
-                v-bind="item.contentAttrs"
-                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
-                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
-                @keyup.enter.native="search">
-            </el-input>
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+              :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+              @keyup.enter.native="search"
+            />
           </template>
           <!--textarea-->
           <template v-else-if="item.type === 'textarea'">
             <el-input
-                v-model="item.val"
-                v-bind="item.contentAttrs"
-                type="textarea"
-                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
-                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
-                @keyup.enter.native="search">
-            </el-input>
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+              type="textarea"
+              :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+              @keyup.enter.native="search"
+            />
           </template>
           <!--input number-->
           <template v-else-if="item.type === 'inputNumber'">
             <el-input-number
-                class="w100"
-                v-model="item.val"
-                v-bind="item.contentAttrs"
-                :controls="checkDefault(item, ['contentAttrs', 'controls'], false)"
-                :min="checkDefault(item, ['contentAttrs', 'min'], 0)"
-                :max="checkDefault(item, ['contentAttrs', 'max'], 100000000000000000)"
-                :precision="checkDefault(item, ['contentAttrs', 'precision'], 0)"
-                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
-                @keyup.enter.native="search">
-            </el-input-number>
+              class="w100"
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+              :controls="checkDefault(item, ['contentAttrs', 'controls'], false)"
+              :min="checkDefault(item, ['contentAttrs', 'min'], 0)"
+              :max="checkDefault(item, ['contentAttrs', 'max'], 100000000000000000)"
+              :precision="checkDefault(item, ['contentAttrs', 'precision'], 0)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+              @keyup.enter.native="search"
+            />
           </template>
           <!--select-->
           <template v-else-if="item.type === 'select'">
             <el-select
-                class="w100"
-                v-model="item.val"
-                v-bind="item.contentAttrs"
-                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
-                :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
-                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
-                @change="val => selectChange(item, val)"
-                @keyup.enter.native="search">
+              class="w100"
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+              :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+              :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
+              @change="val => selectChange(item, val)"
+              @keyup.enter.native="search"
+            >
               <el-option
-                  v-for="(key, i) in options[item.params.option]"
-                  :key="i"
-                  :disabled="key[item.params.optionDisabled]"
-                  :label="key[item.params.optionVal]"
-                  :value="key[item.params.optionKey]">
-              </el-option>
+                v-for="(key, index) in options[item.params.option]"
+                :key="index"
+                :disabled="key[item.params.optionDisabled]"
+                :label="key[item.params.optionVal]"
+                :value="key[item.params.optionKey]"
+              />
             </el-select>
           </template>
           <!--switch-->
           <template v-else-if="item.type === 'switch'">
             <el-switch
-                v-model="item.val"
-                v-bind="item.contentAttrs">
-            </el-switch>
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+            />
           </template>
           <!--cascader-->
           <template v-else-if="item.type === 'cascader'">
             <el-cascader
-                class="w100"
-                v-model="item.val"
-                v-bind="item.contentAttrs"
-                :options="options[item.params.option]"
-                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
-                :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
-                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
-                @change="val => cascaderChange(item, val)"
-                @active-item-change="val => cascaderActive(item, val)">
-            </el-cascader>
+              class="w100"
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+              :options="options[item.params.option]"
+              :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+              :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
+              @change="val => cascaderChange(item, val)"
+              @active-item-change="val => cascaderActive(item, val)"
+            />
           </template>
           <!--radio-->
           <template v-else-if="item.type === 'radio'">
             <el-radio-group
-                v-model="item.val"
-                v-bind="item.contentAttrs"
-                @change="val => radioChange(item, val)">
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+              @change="val => radioChange(item, val)"
+            >
               <el-radio
-                  v-for="(key, i) in options[item.params.option]"
-                  :key="i"
-                  :label="key[item.params.optionKey]"
-                  :disabled="key[item.params.optionDisabled]">
+                v-for="(key, index) in options[item.params.option]"
+                :key="index"
+                :label="key[item.params.optionKey]"
+                :disabled="key[item.params.optionDisabled]"
+              >
                 {{ key[item.params.optionVal] }}
               </el-radio>
             </el-radio-group>
@@ -108,13 +117,15 @@
           <!--checkBox-->
           <template v-else-if="item.type === 'checkBox'">
             <el-checkbox-group
-                v-model="item.val"
-                v-bind="item.contentAttrs">
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+            >
               <el-checkbox
-                  v-for="(key, i) in options[item.params.option]"
-                  :key="i"
-                  :label="key[item.params.optionKey]"
-                  :disabled="key[item.params.optionDisabled]">
+                v-for="(key, index) in options[item.params.option]"
+                :key="index"
+                :label="key[item.params.optionKey]"
+                :disabled="key[item.params.optionDisabled]"
+              >
                 {{ key[item.params.optionVal] }}
               </el-checkbox>
             </el-checkbox-group>
@@ -122,19 +133,19 @@
           <!--dateTimePicker-->
           <template v-else-if="item.type === 'dateTimePicker' ">
             <el-date-picker
-                v-model="item.val"
-                v-bind="item.contentAttrs"
-                :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
-                :editable="checkDefault(item, ['contentAttrs', 'editable'], false)"
-                :style="checkDefault(item, ['contentAttrs', 'style'], 'width:100%')"
-                :value-format="checkDefault(item, ['contentAttrs', 'valueFormat'], 'timestamp')"
+              v-model="item.val"
+              v-bind="item.contentAttrs"
+              :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
+              :editable="checkDefault(item, ['contentAttrs', 'editable'], false)"
+              :style="checkDefault(item, ['contentAttrs', 'style'], 'width:100%')"
+              :value-format="checkDefault(item, ['contentAttrs', 'valueFormat'], 'timestamp')"
 
-                :range-separator="checkDefault(item, ['contentAttrs', 'rangeSeparator'], '至')"
-                :start-placeholder="checkDefault(item, ['contentAttrs', 'startPlaceholder'], '开始日期')"
-                :end-placeholder="checkDefault(item, ['contentAttrs', 'endPlaceholder'], '结束日期')"
-                :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
-                @change="val => changeDateTimePicker(val, item)">
-            </el-date-picker>
+              :range-separator="checkDefault(item, ['contentAttrs', 'rangeSeparator'], '至')"
+              :start-placeholder="checkDefault(item, ['contentAttrs', 'startPlaceholder'], '开始日期')"
+              :end-placeholder="checkDefault(item, ['contentAttrs', 'endPlaceholder'], '结束日期')"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
+              @change="val => changeDateTimePicker(val, item)"
+            />
           </template>
           <!-- render -->
           <template v-else-if="item.type === 'render'">
@@ -147,22 +158,26 @@
         </el-form-item>
       </el-col>
       <el-col
-          v-if="formItem.btnObj"
-          :span="formItem.btnObj.span || formItem.span">
+        v-if="formItem.btnObj"
+        :span="formItem.btnObj.span || formItem.span"
+      >
         <el-form-item
-            v-bind="formItem.btnObj.attrs"
-            :label-width="checkDefault(formItem.btnObj, ['attrs', 'labelWidth'], '0px')">
+          v-bind="formItem.btnObj.attrs"
+          :label-width="checkDefault(formItem.btnObj, ['attrs', 'labelWidth'], '0px')"
+        >
           <slot>
             <div :class="formItem.btnObj.className">
               <el-button
-                  v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('search')"
-                  type="primary"
-                  @click="search">
+                v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('search')"
+                type="primary"
+                @click="search"
+              >
                 {{ formItem.btnObj.searchName || '搜索' }}
               </el-button>
               <el-button
-                  v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('reset')"
-                  @click="reset">
+                v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('reset')"
+                @click="reset"
+              >
                 {{ formItem.btnObj.resetName || '重置' }}
               </el-button>
             </div>
@@ -225,6 +240,7 @@ export default {
         btnObj: {}
       })
     },
+    // eslint-disable-next-line vue/require-default-prop
     formList: [Object, Array],
     options: {
       type: Object,
@@ -356,6 +372,7 @@ export default {
     setParams (params) {
       // hasOwnProperty
       this.formList.forEach(item => {
+        // eslint-disable-next-line no-prototype-builtins
         if (params.hasOwnProperty(item.key)) {
           item.val = params[item.key]
         }

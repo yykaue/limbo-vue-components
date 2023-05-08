@@ -1,7 +1,9 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/7/18. -->
 <template>
   <div class="shadow">
-    <div class="inner">敬请期待</div>
+    <div class="inner">
+      敬请期待
+    </div>
   </div>
 </template>
 

@@ -22,7 +22,7 @@ export default {
     if (Item.render) {
       return Item.render(h, Model)
     } else {
-      return h('span', { style: { 'word-break' : 'break-all' } }, [null, undefined, ''].includes(Model[Item.key]) ? '-' : Model[Item.key])
+      return h('span', { style: { 'word-break': 'break-all' } }, [null, undefined, ''].includes(Model[Item.key]) ? '-' : Model[Item.key])
     }
   }
 }

@@ -19,7 +19,7 @@ export default {
 
     if (icon) {
       // vnodes.push(<svg-icon icon-class={icon}/>)
-      let className = `iconfont ${icon} mr10`
+      const className = `iconfont ${icon} mr10`
       vnodes.push(<i class={className}></i>)
     }
 

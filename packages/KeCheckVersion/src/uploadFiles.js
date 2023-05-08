@@ -24,15 +24,15 @@ const client = new OSS({
 })
 
 async function uploadFile (filePath) {
-  const headers = {
-    'Cache-Control': 'no-store',
-    expires: -1
-  }
+  // const headers = {
+  //   'Cache-Control': 'no-store',
+  //   expires: -1
+  // }
   const uploadPath = `/fonts/${filePath.split(`\\${uploadDir}\\`)[1]}`
   try {
     await client.put(
       uploadPath,
-      filePath,
+      filePath
       // headers
     )
     console.log(`//abc-console.oss-cn-beijing.aliyuncs.com${uploadPath}`)
@@ -41,7 +41,7 @@ async function uploadFile (filePath) {
   }
 }
 
-function LoopDirectory(dir) {
+function LoopDirectory (dir) {
   const files = fs.readdirSync(dir)
   files.forEach((file) => {
     const filePath = path.resolve(dir, file)

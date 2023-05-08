@@ -4,8 +4,8 @@
 import KeToBack from './src/main'
 // const KeToBack = () => import('./src/main')
 
-KeToBack.install = function(Vue) {
+KeToBack.install = function (Vue) {
   Vue.component(KeToBack.name, KeToBack)
-};
+}
 
 export default KeToBack

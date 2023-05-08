@@ -1,25 +1,35 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/7/23. -->
 <template>
   <div class="layout-sidebar">
-    <el-scrollbar class="scrollbar-wrapper" wrap-class="scrollbar-wrapper">
+    <el-scrollbar
+      class="scrollbar-wrapper"
+      wrap-class="scrollbar-wrapper"
+    >
       <el-menu
-          :show-timeout="200"
-          :default-active="$route.path"
-          :collapse="isCollapse"
-          mode="vertical"
-          background-color="#304156"
-          text-color="#bfcbd9"
-          active-text-color="#409EFF">
-        <slot name="logo"></slot>
-        <slot name="title"></slot>
-        <SidebarItem v-for="(route, i) in permission_routers" :key="route.name ? (route.name + i) : i" :item="route" :base-path="route.path"/>
+        :show-timeout="200"
+        :default-active="$route.path"
+        :collapse="isCollapse"
+        mode="vertical"
+        background-color="#304156"
+        text-color="#bfcbd9"
+        active-text-color="#409EFF"
+      >
+        <slot name="logo" />
+        <slot name="title" />
+        <SidebarItem
+          v-for="(route, i) in permission_routers"
+          :key="route.name ? (route.name + i) : i"
+          :item="route"
+          :base-path="route.path"
+        />
       </el-menu>
     </el-scrollbar>
     <KeSidebarFlexible
-        v-if="flexible"
-        class="hamburger-container"
-        :is-active="isActive"
-        @toggleClick="toggleClick"  />
+      v-if="flexible"
+      class="hamburger-container"
+      :is-active="isActive"
+      @toggleClick="toggleClick"
+    />
   </div>
 </template>
 
@@ -40,7 +50,11 @@ export default {
     'el-scrollbar': Scrollbar
   },
   props: {
-    permission_routers: Array,
+    // eslint-disable-next-line vue/prop-name-casing
+    permission_routers: {
+      type: Array,
+      default: () => ([])
+    },
     sidebar: {
       type: Object,
       default: () => ({

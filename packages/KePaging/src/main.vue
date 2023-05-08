@@ -1,15 +1,16 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/7/18. -->
 <template>
   <el-pagination
-      class="paging"
-      v-bind="$attrs"
-      v-on="$listeners"
-      :current-page.sync="params.current"
-      :page-size.sync="params.pageSize"
-      :page-sizes="pageSizes"
-      :layout="layout"
-      @size-change="onSizeChange"
-      @current-change="onCurrentChange">
+    class="paging"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :current-page.sync="params.current"
+    :page-size.sync="params.pageSize"
+    :page-sizes="pageSizes"
+    :layout="layout"
+    @size-change="onSizeChange"
+    @current-change="onCurrentChange"
+  >
     <slot />
   </el-pagination>
 </template>

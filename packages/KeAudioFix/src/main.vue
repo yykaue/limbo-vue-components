@@ -1,13 +1,24 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/12/13. -->
 <template>
   <div class="audio-fix">
-    <el-tooltip class="tooltip-icon" placement="top">
-      <div slot="content">手动修复录音失真</div>
-      <i class="iconfont icon-xiufu" @click="openFix"></i>
+    <el-tooltip
+      class="tooltip-icon"
+      placement="top"
+    >
+      <div slot="content">
+        手动修复录音失真
+      </div>
+      <i
+        class="iconfont icon-xiufu"
+        @click="openFix"
+      />
     </el-tooltip>
-    <DialogFix :audioParams="audioParams" :appendToBody="appendToBody" @audioFix="audioFix" />
+    <DialogFix
+      :audio-params="audioParams"
+      :append-to-body="appendToBody"
+      @audioFix="audioFix"
+    />
   </div>
-
 </template>
 
 <script>

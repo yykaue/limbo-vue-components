@@ -1,9 +1,10 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/7/18. -->
 <template>
-  <i @click="back"
-     title="返回"
-     class="iconfont icon-fanhui icon-back"
-  ></i>
+  <i
+    @click="back"
+    title="返回"
+    class="iconfont icon-fanhui icon-back"
+  />
 </template>
 
 <script>

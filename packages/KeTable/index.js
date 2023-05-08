@@ -4,8 +4,8 @@
 import KeTable from './src/main'
 // const KeTable = () => import('./src/main')
 
-KeTable.install = function(Vue) {
+KeTable.install = function (Vue) {
   Vue.component(KeTable.name, KeTable)
-};
+}
 
 export default KeTable

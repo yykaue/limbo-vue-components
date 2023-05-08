@@ -25,7 +25,7 @@ export default {
     props: {
       type: Object,
       default: () => ({})
-    },
+    }
   },
   render: (h, ctx) => {
     const Props = ctx.props
@@ -105,18 +105,18 @@ export default {
             _propsOption[key] = splitDot(_options.params[key], _item)
           }
           return h(_dom, {
-              ..._attribute,
-              props: {
-                ..._attribute.props,
-                ..._domProps,
-                ..._propsOption
-              },
-              on: {
-                ..._attribute.on,
-                ..._domOn
-              },
-              key: `${+new Date()}${_dom}${_i}`
-            }, loopChild(_item.children)
+            ..._attribute,
+            props: {
+              ..._attribute.props,
+              ..._domProps,
+              ..._propsOption
+            },
+            on: {
+              ..._attribute.on,
+              ..._domOn
+            },
+            key: `${+new Date()}${_dom}${_i}`
+          }, loopChild(_item.children)
           )
         })
       }

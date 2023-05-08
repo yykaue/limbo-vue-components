@@ -27,7 +27,7 @@
   },
   "scripts": {
     "lint:ext": "eslint --ext .js,.vue .",
-    "lint:fix": "eslint --fix .js,.vue .",
+    "lint:fix": "eslint --fix --ext .js,.vue .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "patch": "npm version patch && git push origin master && git push origin --tags && npm publish",
     "minor": "npm version minor && git push origin master && git push origin --tags && npm publish",

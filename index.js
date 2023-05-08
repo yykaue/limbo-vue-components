@@ -34,7 +34,7 @@ const components = {
   KeTable,
   KeToBack,
   KeUnfinished,
-  KeUploadAli,
+  KeUploadAli
   // KeVideo
 }
 
@@ -66,7 +66,7 @@ export {
   KeTable,
   KeToBack,
   KeUnfinished,
-  KeUploadAli,
+  KeUploadAli
   // KeVideo
 }
 export default {

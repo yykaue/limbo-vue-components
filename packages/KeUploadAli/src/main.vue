@@ -1,25 +1,54 @@
 <!-- Created by limbo <yykaue@qq.com> on 2019/8/16. -->
 <template>
   <div class="uploadAli">
-    <el-button ref="chooseBtn" v-show="!uploadAli.chooseBtnHide" @click="chooseFiles">{{uploadAli.chooseBtnName || '选择文件'}}</el-button>
-    <el-button ref="uploadBtn" type="primary" v-show="!uploadAli.uploadBtnHide">{{uploadAli.uploadBtnName || '上传'}}</el-button>
-    <el-button v-if="$tools.objProxy(uploaderObj,[]).files._.length !== 0 && multiSelection"
-        type="success"
-        @click="resetFiles">全部清除
+    <el-button
+      ref="chooseBtn"
+      v-show="!uploadAli.chooseBtnHide"
+      @click="chooseFiles"
+    >
+      {{ uploadAli.chooseBtnName || '选择文件' }}
     </el-button>
-    <slot name="uploadList" :uploaderObj="uploaderObj">
-      <div v-if="$tools.objProxy(uploaderObj,[]).files._.length !== 0" class="files">
-        <div v-for="(item,i) in uploaderObj.files" :key="i">
+    <el-button
+      ref="uploadBtn"
+      type="primary"
+      v-show="!uploadAli.uploadBtnHide"
+    >
+      {{ uploadAli.uploadBtnName || '上传' }}
+    </el-button>
+    <el-button
+      v-if="$tools.objProxy(uploaderObj,[]).files._.length !== 0 && multiSelection"
+      type="success"
+      @click="resetFiles"
+    >
+      全部清除
+    </el-button>
+    <slot
+      name="uploadList"
+      :uploaderObj="uploaderObj"
+    >
+      <div
+        v-if="$tools.objProxy(uploaderObj,[]).files._.length !== 0"
+        class="files"
+      >
+        <div
+          v-for="(item,i) in uploaderObj.files"
+          :key="i"
+        >
           <span class="fileName">
-            {{showFileMsg(item)}}
+            {{ showFileMsg(item) }}
           </span>
-          <i class="iconfont icon-shanchu" @click="removeFile(item)"></i>
-          <el-progress v-if="$tools.objProxy(uploadAli, true).files.progress._"
-              class="progress"
-              status="success"
-              :text-inside="true"
-              :stroke-width="14"
-              :percentage="item.percent"></el-progress>
+          <i
+            class="iconfont icon-shanchu"
+            @click="removeFile(item)"
+          />
+          <el-progress
+            v-if="$tools.objProxy(uploadAli, true).files.progress._"
+            class="progress"
+            status="success"
+            :text-inside="true"
+            :stroke-width="14"
+            :percentage="item.percent"
+          />
         </div>
       </div>
     </slot>
@@ -64,7 +93,7 @@ export default {
           size: 1024 * 0, // Byte
           progress: true, // 进度条
           extensions: [], // 允许上传的扩展名
-          repetition: true, // 不允许重复(true 不允许)
+          repetition: true // 不允许重复(true 不允许)
           // img: {
           //   size: [1000, 1000], // 图片尺寸大小限制 [width, height]
           //   limit: ['=', '=']  // ['=', '!=', '<', '>', '<=', '>=']
@@ -86,8 +115,8 @@ export default {
         accessid: 'accessid',
         accesskey: 'accesskey',
         policyText: {
-          'expiration': '2025-01-01T12:00:00.000Z', // 设置该Policy的失效时间，超过这个失效时间之后，就没有办法通过这个policy上传文件了
-          'conditions': [
+          expiration: '2025-01-01T12:00:00.000Z', // 设置该Policy的失效时间，超过这个失效时间之后，就没有办法通过这个policy上传文件了
+          conditions: [
             ['content-length-range', 0, 1048576000] // 设置上传文件的大小限制
           ]
         }
@@ -122,13 +151,13 @@ export default {
     },
     // 显示上传文件信息
     showFileMsg (file) {
-      let name = file.name
-      let size = this.computeSize(file.size)
-      let status = ``
+      const name = file.name
+      const size = this.computeSize(file.size)
+      let status = ''
       if (file.status === 5) {
-        status = `（完成）`
+        status = '（完成）'
       } else if (file.status === 4) {
-        status = `（失败）`
+        status = '（失败）'
       } else if (file.percent) {
         status = `（${file.percent}%）`
       }
@@ -136,7 +165,7 @@ export default {
     },
     // 文件大小
     computeSize (size) {
-      let sizeStr = ``
+      let sizeStr = ''
       if (size < 1024) {
         sizeStr = `${size}B`
       } else if (size >= 1024 && size < 1024 * 1024) {
@@ -160,7 +189,7 @@ export default {
     resetFiles () {
       this.uploaderObj.stop()
       this.uploadAli.finished = true
-      let length = this.uploaderObj.files.length
+      const length = this.uploaderObj.files.length
       for (let i = length; i > 0; i--) {
         this.uploaderObj.removeFile(this.uploaderObj.files[i - 1])
       }
@@ -276,7 +305,7 @@ export default {
     },
     // 单个文件上传之前
     BeforeUpload (uploader, file) {
-      const replaceArr = [/\+/g, /\?/g, /\%/g, /\#/g, /\//g, /\s/g]
+      const replaceArr = [/\+/g, /\?/g, /%/g, /#/g, /\//g, /\s/g]
       const inputName = typeof file.name === 'string' ? file.name : 'file'
       const reName = `${+new Date()}_${file.id}_${inputName}`
       const fileName = replaceArr.reduce((acc, cur) => acc.replace(cur, '_'), reName)
@@ -286,17 +315,17 @@ export default {
         name: file.name
       })
       const newMultipartParams = {
-        'Filename': 'console/',
-        'key': `${this.uploadAli.dirname || 'limbo'}/${fileName}`,
-        'policy': this.policyBase64,
-        'OSSAccessKeyId': this.uploadConfig.accessid,
-        'success_action_status': '200',
-        'signature': this.signature,
-        'multi_selection': false
+        Filename: 'console/',
+        key: `${this.uploadAli.dirname || 'limbo'}/${fileName}`,
+        policy: this.policyBase64,
+        OSSAccessKeyId: this.uploadConfig.accessid,
+        success_action_status: '200',
+        signature: this.signature,
+        multi_selection: false
       }
       uploader.setOption({
-        'url': this.uploadConfig.host,
-        'multipart_params': newMultipartParams
+        url: this.uploadConfig.host,
+        multipart_params: newMultipartParams
       })
     },
     // 整个队列中文件上传完成后
@@ -347,8 +376,8 @@ export default {
 
           img.onload = () => {
             let flag = true
-            let msg = []
-            let imgMsg = [this.contrast(img.width, 0), this.contrast(img.height, 1)]
+            const msg = []
+            const imgMsg = [this.contrast(img.width, 0), this.contrast(img.height, 1)]
             imgMsg.forEach(item => {
               if (!item.flag) {
                 flag = false
@@ -382,7 +411,7 @@ export default {
     contrast (size, num) {
       let flag = false
       let rule = ''
-      let imgSize = this.$tools.objProxy(this.uploadAli).files.img.size[num]._
+      const imgSize = this.$tools.objProxy(this.uploadAli).files.img.size[num]._
       let type = '宽'
       if (num === 1) {
         type = '高'
@@ -441,7 +470,7 @@ export default {
     },
     // 获取扩展名
     getSuffix (fileName) {
-      let pos = fileName.lastIndexOf('.')
+      const pos = fileName.lastIndexOf('.')
       let suffix = ''
       if (pos !== -1) {
         suffix = fileName.substring(pos + 1)
@@ -469,7 +498,7 @@ export default {
     // 对ExtraList输出message
     printExtraListInfo (file) {
       const suffixStr = this.getSuffix(file.name)
-      const extraObj = this.$tools.objProxy(this.uploadAli, []).extraList._.find(item => item.extensions.includes(suffixStr)) ||  { extensions: [] }
+      const extraObj = this.$tools.objProxy(this.uploadAli, []).extraList._.find(item => item.extensions.includes(suffixStr)) || { extensions: [] }
       let msg = ''
       extraObj.extensions.forEach(item => {
         msg += item + ' '
@@ -497,7 +526,7 @@ export default {
       } else {
         this.$emit('unfinished', this.uploadAli.uploadedList)
       }
-    },
+    }
   }
 }
 

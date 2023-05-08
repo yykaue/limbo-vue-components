@@ -17,6 +17,7 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'no-debugger': 'off',
+    'standard/no-callback-literal': [0, ['cb', 'callback']],
     'vue/no-confusing-v-for-v-if': 'error'
   },
 

@@ -2,19 +2,21 @@
 <template>
   <!--  <div @contextmenu="()=> defaultMenu(false)">-->
   <video
-      ref="vdo"
-      class="video-js"
-      controls
-      preload="auto"
-      width="640"
-      height="264"
-      poster=""
-      data-setup="{}"
+    ref="vdo"
+    class="video-js"
+    controls
+    preload="auto"
+    width="640"
+    height="264"
+    poster=""
+    data-setup="{}"
   >
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
-      <a href="https://videojs.com/html5-video-support/"
-          target="_blank">supports HTML5 video</a>
+      <a
+        href="https://videojs.com/html5-video-support/"
+        target="_blank"
+      >supports HTML5 video</a>
     </p>
   </video>
 </template>
@@ -29,10 +31,12 @@ export default {
       default: () => ({})
     },
     controlBar: {
-      type: Object
+      type: Object,
+      default: undefined
     },
     onPlayerReadyFn: {
-      type: Function
+      type: Function,
+      default: undefined
     }
   },
   data () {
@@ -65,7 +69,7 @@ export default {
             { name: 'durationDisplay' }, // 总时间
             { // 倍数播放
               name: 'playbackRateMenuButton',
-              'playbackRates': [1, 1.25, 1.5, 2]
+              playbackRates: [1, 1.25, 1.5, 2]
             },
             {
               name: 'volumePanel', // 音量控制

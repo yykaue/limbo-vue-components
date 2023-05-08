@@ -4,8 +4,8 @@
 import KeUnfinished from './src/main'
 // const KeUnfinished = () => import('./src/main')
 
-KeUnfinished.install = function(Vue) {
+KeUnfinished.install = function (Vue) {
   Vue.component(KeUnfinished.name, KeUnfinished)
-};
+}
 
 export default KeUnfinished
