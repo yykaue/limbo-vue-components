@@ -7,6 +7,7 @@ module.exports = {
 
   extends: [
     'plugin:vue/essential',
+    'plugin:vue/strongly-recommended',
     '@vue/standard'
   ],
 
@@ -31,10 +32,5 @@ module.exports = {
         jest: true
       }
     }
-  ],
-
-  'extends': [
-    'plugin:vue/strongly-recommended',
-    '@vue/standard'
   ]
 }
