@@ -11,7 +11,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(process.cwd(), './lib'),
-    publicPath: '/dist/',
+    publicPath: './',
     filename: 'index.js',
     chunkFilename: '[id].js',
     libraryExport: 'default',
@@ -21,7 +21,8 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash:7].css',
+      // filename: 'css/[name].[contenthash:7].css',
+      filename: 'css/[name].css',
       ignoreOrder: true
     }),
     new BundleAnalyzerPlugin()
@@ -59,6 +60,7 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
+              publicPath: '../',
               hmr: !process.env.NODE_ENV !== 'development'
             }
           },
@@ -89,6 +91,7 @@ module.exports = {
         loader: 'url-loader',
         query: {
           limit: 10000,
+          esModule: false,
           name: path.posix.join('static', '[name].[hash:7].[ext]')
         }
       }
