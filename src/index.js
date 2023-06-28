@@ -71,18 +71,5 @@ export {
 }
 export default {
   install,
-  KeAudioFix,
-  KeCheckVersion,
-  KeColumn,
-  KeEditor,
-  KeFormItem,
-  KeFormModel,
-  KePaging,
-  KeQrCode,
-  KeSidebar,
-  KeSidebarFlexible,
-  KeTable,
-  KeToBack,
-  KeUnfinished,
-  KeUploadAli
+  ...components
 }
