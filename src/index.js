@@ -1,7 +1,7 @@
 /**
  *Created by limbo <yykaue@qq.com> on 2019/7/3.
  */
-import { printMessage } from './utils/tools'
+import { printInformation } from './utils/tools'
 
 import KeAudioFix from '../packages/KeAudioFix'
 import KeCheckVersion from '../packages/KeCheckVersion'
@@ -72,14 +72,14 @@ const install = (Vue, options = {}) => {
 
   payloadList.forEach(item => {
     if (!options[item]) {
-      const messageArray = [
-        { label: 'limbo-vue-components', style: 'padding:5px;color: #fadfa3;background:#030307;border-radius:3px;' },
-        { label: 'Error:', style: 'margin-left:5px;color:red;font-size:18px;font-weight:700;' },
-        { label: '插件未发现', style: '' },
-        { label: item, style: 'margin:0 3px;padding:3px;color:#fff;background:#F56C6C;border-radius:3px;' },
-        { label: ',请注入该依赖', style: '' }
+      const infoArray = [
+        { message: 'limbo-vue-components', style: 'padding:5px;color: #fadfa3;background:#030307;border-radius:3px;' },
+        { message: 'Error:', style: 'margin-left:5px;color:red;font-size:18px;font-weight:700;' },
+        { message: '插件未发现' },
+        { message: item, style: 'margin:0 3px;padding:3px;color:#fff;background:#F56C6C;border-radius:3px;' },
+        { message: ',请注入该依赖' }
       ]
-      printMessage(messageArray)
+      printInformation(infoArray)
     }
   })
 
