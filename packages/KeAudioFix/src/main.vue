@@ -22,14 +22,10 @@
 </template>
 
 <script>
-import {
-  Tooltip
-} from 'element-ui'
 import DialogFix from './modules/dialogFix'
 export default {
   name: 'KeAudioFix',
   components: {
-    'el-tooltip': Tooltip,
     DialogFix
   },
   props: {

@@ -34,10 +34,6 @@
 </template>
 
 <script>
-import {
-  Menu,
-  Scrollbar
-} from 'element-ui'
 import SidebarItem from './SidebarItem'
 import KeSidebarFlexible from '../../KeSidebarFlexible'
 
@@ -45,9 +41,7 @@ export default {
   name: 'KeSidebar',
   components: {
     SidebarItem,
-    KeSidebarFlexible,
-    'el-menu': Menu,
-    'el-scrollbar': Scrollbar
+    KeSidebarFlexible
   },
   props: {
     // eslint-disable-next-line vue/prop-name-casing

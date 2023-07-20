@@ -225,24 +225,6 @@
 </template>
 
 <script>
-import {
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Col,
-  DatePicker,
-  Form,
-  FormItem,
-  Input,
-  InputNumber,
-  Option,
-  Radio,
-  RadioGroup,
-  Row,
-  Select,
-  Switch,
-  Message
-} from 'element-ui'
 import RenderItem from './render'
 import RenderJson from './renderJson'
 import RenderLabel from './renderLabel'
@@ -251,22 +233,6 @@ export default {
   name: 'KeFormModel',
   inheritAttrs: false,
   components: {
-    'el-button': Button,
-    'el-checkbox': Checkbox,
-    'el-checkbox-group': CheckboxGroup,
-    'el-col': Col,
-    'el-date-picker': DatePicker,
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-input': Input,
-    'el-input-number': InputNumber,
-    'el-option': Option,
-    'el-radio': Radio,
-    'el-radio-group': RadioGroup,
-    'el-row': Row,
-    'el-select': Select,
-    'el-switch': Switch,
-
     RenderItem,
     RenderJson,
     RenderLabel
@@ -401,7 +367,7 @@ export default {
         if (valid) {
           cb && cb()
         } else {
-          Message({
+          this.$ElMessage({
             message: '请检查页面校验项',
             type: 'error',
             duration: 3000

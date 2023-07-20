@@ -1,18 +1,10 @@
 /**
  *Created by limbo <yykaue@qq.com> on 2019/7/11.
  */
-import {
-  Table,
-  TableColumn
-} from 'element-ui'
-
 export default {
   name: 'KeTable',
   functional: true,
-  components: {
-    ElTable: Table,
-    ElTableColumn: TableColumn
-  },
+  components: {},
   props: {
     cols: {
       type: Array,

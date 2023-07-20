@@ -1,7 +1,7 @@
 /**
  *Created by limbo <yykaue@qq.com> on 2019/7/3.
  */
-import ToolsExtra from './utils/ToolsExtra'
+import { printMessage } from './utils/tools'
 
 import KeAudioFix from '../packages/KeAudioFix'
 import KeCheckVersion from '../packages/KeCheckVersion'
@@ -39,14 +39,57 @@ const components = {
 }
 
 const install = (Vue, options = {}) => {
-  if (!options.tools) {
-    console.log('vue-component插件对tools有依赖，请加载')
-  }
+  const payloadList = ['tools', 'Message', 'MessageBox']
+  // limbo-common-css
+  // TODO 是否需提示开发者需要注入第三方UI插件
+  // const ElementUI = [
+  //   'Button',
+  //   'Checkbox',
+  //   'CheckboxGroup',
+  //   'Col',
+  //   'DatePicker',
+  //   'Dialog',
+  //   'Form',
+  //   'FormItem',
+  //   'Input',
+  //   'InputNumber',
+  //   'Menu',
+  //   'MenuItem',
+  //   'Option',
+  //   'Pagination',
+  //   'Progress',
+  //   'Table',
+  //   'TableColumn',
+  //   'Tooltip',
+  //   'Radio',
+  //   'RadioGroup',
+  //   'Row',
+  //   'Scrollbar',
+  //   'Select',
+  //   'Submenu',
+  //   'Switch'
+  // ]
+
+  payloadList.forEach(item => {
+    if (!options[item]) {
+      const messageArray = [
+        { label: 'limbo-vue-components', style: 'padding:5px;color: #fadfa3;background:#030307;border-radius:3px;' },
+        { label: 'Error:', style: 'margin-left:5px;color:red;font-size:18px;font-weight:700;' },
+        { label: '插件未发现', style: '' },
+        { label: item, style: 'margin:0 3px;padding:3px;color:#fff;background:#F56C6C;border-radius:3px;' },
+        { label: ',请注入该依赖', style: '' }
+      ]
+      printMessage(messageArray)
+    }
+  })
+
   Vue.prototype.$tools = Object.assign({},
     Vue.prototype.$tools,
-    options.tools,
-    ToolsExtra(options.tools)
+    options.tools
   )
+  Vue.prototype.$ElMessage = options.Message
+  Vue.prototype.$ElMessageBox = options.MessageBox
+
   Object.keys(components).forEach(item => {
     Vue.component(components[item].name, components[item])
   })

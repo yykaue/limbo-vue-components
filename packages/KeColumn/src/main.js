@@ -1,16 +1,10 @@
 /**
  *Created by limbo <yykaue@qq.com> on 2019/7/18.
  */
-import {
-  TableColumn
-} from 'element-ui'
-
 export default {
   name: 'KeColumn',
   functional: true,
-  components: {
-    ElTableColumn: TableColumn
-  },
+  components: {},
   render: (h, ctx) => {
     const Cols = ctx.props.cols || []
 

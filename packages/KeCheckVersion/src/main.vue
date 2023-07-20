@@ -1,12 +1,5 @@
 <!-- Created by limbo <yykaue@qq.com> on 2020/10/12. -->
-<template>
-  <span />
-</template>
-
 <script>
-import {
-  MessageBox
-} from 'element-ui'
 import versionCheck from './versionCheck'
 
 export default {
@@ -63,7 +56,7 @@ export default {
         return
       }
       clearInterval(payload.times)
-      MessageBox.alert('请点击 <确定> 更新系统，如不更新可能造成数据错误，请知悉', '发现新版本', {
+      this.$ElMessageBox.alert('请点击 <确定> 更新系统，如不更新可能造成数据错误，请知悉', '发现新版本', {
         lockScroll: false,
         confirmButtonText: '确定',
         callback: action => {

@@ -47,18 +47,9 @@
 </template>
 
 <script>
-import {
-  Button,
-  Dialog,
-  InputNumber
-} from 'element-ui'
 export default {
   name: 'DialogFix',
-  components: {
-    'el-button': Button,
-    'el-dialog': Dialog,
-    'el-input-number': InputNumber
-  },
+  components: {},
   props: {
     audioParams: {
       type: Object,

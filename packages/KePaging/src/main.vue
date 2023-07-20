@@ -16,15 +16,10 @@
 </template>
 
 <script>
-import {
-  Pagination
-} from 'element-ui'
 export default {
   name: 'KePaging',
   inheritAttrs: false,
-  components: {
-    'el-pagination': Pagination
-  },
+  components: {},
   props: {
     params: {
       type: Object,

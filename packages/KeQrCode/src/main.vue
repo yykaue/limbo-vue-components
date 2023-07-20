@@ -42,7 +42,11 @@ export default {
         this.option,
         error => {
           if (error) {
-            this.$tools.message('二维码生成失败，请稍后重试', 'error', 2000)
+            this.$ElMessage({
+              message: '二维码生成失败，请稍后重试',
+              type: 'error',
+              duration: 2000
+            })
             console.error(error)
           }
         }

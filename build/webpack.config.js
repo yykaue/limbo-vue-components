@@ -31,9 +31,9 @@ module.exports = {
     extensions: ['.js', '.vue', '.json']
   },
   externals: {
-    vue: 'vue',
-    'element-ui': 'element-ui',
-    'limbo-common-css': 'limbo-common-css'
+    vue: 'vue'
+    // 'element-ui': 'element-ui',
+    // 'limbo-common-css': 'limbo-common-css'
   },
   module: {
     rules: [

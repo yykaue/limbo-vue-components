@@ -68,19 +68,13 @@
 </template>
 
 <script>
-import {
-  MenuItem,
-  Submenu
-} from 'element-ui'
 import Item from './Item'
 import path from 'path'
 
 export default {
   name: 'SidebarItem',
   components: {
-    Item,
-    'el-menu-item': MenuItem,
-    'el-submenu': Submenu
+    Item
   },
   props: {
     // route object

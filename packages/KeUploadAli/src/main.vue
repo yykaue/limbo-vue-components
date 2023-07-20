@@ -57,17 +57,10 @@
 
 <script>
 import plupload from 'plupload'
-import {
-  Button,
-  Progress
-} from 'element-ui'
 
 export default {
   name: 'KeUploadAli',
-  components: {
-    'el-button': Button,
-    'el-progress': Progress
-  },
+  components: {},
   props: {
     uploadAli: {
       type: Object,
@@ -149,6 +142,13 @@ export default {
       this.signature = hash.toString(this.$tools.CryptoJS.enc.Base64)
       this.pluploadInit()
     },
+    message (message, type, duration = 1500) {
+      this.$ElMessage({
+        message,
+        type,
+        duration
+      })
+    },
     // 显示上传文件信息
     showFileMsg (file) {
       const name = file.name
@@ -200,7 +200,7 @@ export default {
     removeFile (file) {
       if (file.status === 2) {
         this.uploaderObj.stop()
-        this.$tools.message('上传已终止', 'warning', 3000)
+        this.message('上传已终止', 'warning', 3000)
       }
       this.uploaderObj.removeFile(file)
 
@@ -276,7 +276,7 @@ export default {
     FileFiltered (uploader, file) {
       if (this.multiSelection) {
         if (this.$tools.objProxy(this.uploadAli).files.limit._ && uploader.files.length > (this.uploadAli.files.limit - (this.uploadAli.files.existed || 0))) {
-          this.$tools.message(`上传文件数量不能超过${this.uploadAli.files.limit}个`, 'error', 3000)
+          this.message(`上传文件数量不能超过${this.uploadAli.files.limit}个`, 'error', 3000)
           uploader.removeFile(file)
         } else if (this.checkExtraList(file, uploader)) {
           this.printExtraListInfo(file)
@@ -345,19 +345,19 @@ export default {
     Error (uploader, err) {
       switch (err.code) {
         case -200:
-          this.$tools.message('网络发生错误', 'error', 3000)
+          this.message('网络发生错误', 'error', 3000)
           break
         case -300:
-          this.$tools.message('磁盘读写错误', 'error', 3000)
+          this.message('磁盘读写错误', 'error', 3000)
           break
         case -600:
-          this.$tools.message(`上传文件体积不能超过${this.computeSize(this.uploadAli.files.size)}`, 'error', 3000)
+          this.message(`上传文件体积不能超过${this.computeSize(this.uploadAli.files.size)}`, 'error', 3000)
           break
         case -601:
-          this.$tools.message('选择的文件类型不符合要求', 'error', 3000)
+          this.message('选择的文件类型不符合要求', 'error', 3000)
           break
         case -602:
-          this.$tools.message('选取文件重复', 'error', 3000)
+          this.message('选取文件重复', 'error', 3000)
           break
         default:
           console.log(err)
@@ -388,7 +388,7 @@ export default {
             })
 
             if (msg.length > 0) {
-              this.$tools.message(`${msg.join('，')}`, 'error', 3000)
+              this.message(`${msg.join('，')}`, 'error', 3000)
             }
 
             img.destroy()
@@ -503,7 +503,7 @@ export default {
       extraObj.extensions.forEach(item => {
         msg += item + ' '
       })
-      this.$tools.message(`文件类型为${msg}的数量不能超过${extraObj.limit}个`, 'error', 4000)
+      this.message(`文件类型为${msg}的数量不能超过${extraObj.limit}个`, 'error', 4000)
     },
     // 获取file Url
     getFileUrl (file) {
@@ -533,7 +533,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import '~limbo-common-css/lib/iconfont/iconfont.css';
+  // @import '~limbo-common-css/lib/iconfont/iconfont.css';
 
   .uploadAli {
     .el-button {
