@@ -1,7 +1,7 @@
 /**
  *Created by limbo <yykaue@qq.com> on 2019/7/3.
  */
-import { printInformation } from './utils/tools'
+import { printInformation, infoStyle, infoColor } from './utils/tools'
 
 import KeAudioFix from '../packages/KeAudioFix'
 import KeCheckVersion from '../packages/KeCheckVersion'
@@ -73,10 +73,9 @@ const install = (Vue, options = {}) => {
   payloadList.forEach(item => {
     if (!options[item]) {
       const infoArray = [
-        { message: 'limbo-vue-components', style: 'padding:5px;color: #fadfa3;background:#030307;border-radius:3px;' },
-        { message: 'Error:', style: 'margin-left:5px;color:red;font-size:18px;font-weight:700;' },
+        { message: 'Error:', style: infoStyle(infoColor.danger) },
         { message: '插件未发现' },
-        { message: item, style: 'margin:0 3px;padding:3px;color:#fff;background:#F56C6C;border-radius:3px;' },
+        { message: item, style: infoStyle(infoColor.info) },
         { message: ',请注入该依赖' }
       ]
       printInformation(infoArray)
