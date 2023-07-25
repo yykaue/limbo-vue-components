@@ -32,7 +32,7 @@ function versionCheck ({
       let JSONInfo
       try {
         JSONInfo = JSON.parse(xhr.response)
-      } catch {
+      } catch (e) {
         JSONInfo = {}
       }
 

@@ -39,7 +39,6 @@ const components = {
 }
 
 const install = (Vue, options = {}) => {
-  const payloadList = ['tools', 'Message', 'MessageBox']
   // limbo-common-css
   // TODO 是否需提示开发者需要注入第三方UI插件
   // const ElementUI = [
@@ -69,6 +68,7 @@ const install = (Vue, options = {}) => {
   //   'Submenu',
   //   'Switch'
   // ]
+  const payloadList = ['tools', 'Message', 'MessageBox']
 
   payloadList.forEach(item => {
     if (!options[item]) {
