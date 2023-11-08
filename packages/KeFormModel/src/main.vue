@@ -24,16 +24,12 @@
           :prop="item.headerAttrs && item.headerAttrs.prop || item.key"
           :label="item.name"
         >
-          <template
+          <RenderLabel
             v-if="item.renderLabel"
-            v-slot:label
-          >
-            <RenderLabel
-              :model="model"
-              :item="item"
-            />
-          </template>
-          <!--input-->
+            slot="label"
+            :model="model"
+            :item="item"
+          />
           <template v-if="item.type === 'input'">
             <el-input
               v-model="model[item.key]"
