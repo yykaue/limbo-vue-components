@@ -18,7 +18,7 @@
       >
         <el-form-item
           v-bind="item.headerAttrs"
-          :label="item.name"
+          :label="typeof item.name === 'function' ? item.name() : item.name"
         >
           <!--input-->
           <template v-if="item.type === 'input'">
@@ -172,13 +172,13 @@
                 type="primary"
                 @click="search"
               >
-                {{ formItem.btnObj.searchName || '搜索' }}
+                {{ checkDefault(formItem.btnObj, ['searchName'], '搜索') }}
               </el-button>
               <el-button
                 v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('reset')"
                 @click="reset"
               >
-                {{ formItem.btnObj.resetName || '重置' }}
+                {{ checkDefault(formItem.btnObj, ['resetName'], '重置') }}
               </el-button>
             </div>
           </slot>
@@ -242,6 +242,9 @@ export default {
           }
         } else {
           backParams = pre[cur]
+          if (i === arr.length - 1 && typeof backParams === 'function') {
+            backParams = backParams()
+          }
         }
         return backParams
       }, target)
@@ -285,7 +288,7 @@ export default {
       this.resetParams()
       this.$emit('reset')
       this.$ElMessage({
-        message: '条件已重置',
+        message: this.checkDefault(this.formItem.btnObj, ['resetMessage'], '条件已重置'),
         type: 'success',
         duration: 2000
       })

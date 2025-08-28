@@ -22,7 +22,7 @@
         <el-form-item
           v-bind="item.headerAttrs"
           :prop="item.headerAttrs && item.headerAttrs.prop || item.key"
-          :label="item.name"
+          :label="typeof item.name === 'function' ? item.name() : item.name"
         >
           <RenderLabel
             v-if="item.renderLabel"
@@ -203,14 +203,14 @@
                 type="primary"
                 @click="save"
               >
-                {{ formItem.btnObj.saveName || '确 定' }}
+                {{ checkDefault(formItem.btnObj, ['saveName', '确 定']) }}
               </el-button>
               <el-button
                 v-if="(!formItem.btnObj.showList || formItem.btnObj.showList.includes('cancel'))"
                 v-bind="formItem.btnObj.cancelAttrs"
                 @click="cancel"
               >
-                {{ formItem.btnObj.cancelName || '取 消' }}
+                {{ checkDefault(formItem.btnObj, ['cancelName', '取 消']) }}
               </el-button>
             </div>
           </slot>
@@ -296,6 +296,9 @@ export default {
           }
         } else {
           backParams = pre[cur]
+          if (i === arr.length - 1 && typeof backParams === 'function') {
+            backParams = backParams()
+          }
         }
         return backParams
       }, target)
@@ -364,7 +367,7 @@ export default {
           cb && cb()
         } else {
           this.$ElMessage({
-            message: '请检查页面校验项',
+            message: this.checkDefault(this.formItem.btnObj, ['submitMessage'], '请检查页面校验项'),
             type: 'error',
             duration: 3000
           })

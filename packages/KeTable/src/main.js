@@ -38,12 +38,19 @@ export default {
       } else {
         key = item.columnKey || item.prop || `${+new Date()}${i}`
       }
+
+      let headerSlot
+      if (item.header) {
+        headerSlot = props => item.header(h, props)
+      } else if (item.labelI18n) {
+        headerSlot = item.labelI18n
+      }
       const params = {
         props: item,
         key,
         scopedSlots: {
           default: item.render ? props => item.render(h, props) : undefined,
-          header: item.header ? props => item.header(h, props) : undefined
+          header: headerSlot
         }
       }
       if (item.children) {
