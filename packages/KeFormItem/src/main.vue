@@ -71,7 +71,7 @@
                 v-for="(key, index) in options[item.params.option]"
                 :key="index"
                 :disabled="key[item.params.optionDisabled]"
-                :label="key[item.params.optionVal]"
+                :label="checkI18n(key[item.params.optionVal])"
                 :value="key[item.params.optionKey]"
               />
             </el-select>
@@ -89,7 +89,7 @@
               class="w100"
               v-model="item.val"
               v-bind="item.contentAttrs"
-              :options="options[item.params.option]"
+              :options="checkOptions(options[item.params.option])"
               :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
               :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
               :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
@@ -107,7 +107,7 @@
               <el-radio
                 v-for="(key, index) in options[item.params.option]"
                 :key="index"
-                :label="key[item.params.optionKey]"
+                :label="checkI18n(key[item.params.optionKey])"
                 :disabled="key[item.params.optionDisabled]"
               >
                 {{ key[item.params.optionVal] }}
@@ -123,7 +123,7 @@
               <el-checkbox
                 v-for="(key, index) in options[item.params.option]"
                 :key="index"
-                :label="key[item.params.optionKey]"
+                :label="checkI18n(key[item.params.optionKey])"
                 :disabled="key[item.params.optionDisabled]"
               >
                 {{ key[item.params.optionVal] }}
@@ -252,6 +252,45 @@ export default {
         return undefined
       }
       return payload !== undefined ? payload : defaultVal
+    },
+    checkI18n (payload) {
+      return typeof payload === 'function' ? payload() : payload
+    },
+    checkOptions (options) {
+      let needCopy
+      if (options.constructor === Array) {
+        needCopy = []
+      } else {
+        needCopy = {}
+      }
+      const stack = [{
+        source: options,
+        target: needCopy
+      }]
+      while (stack.length) {
+        const { source, target } = stack.shift()
+        for (const key in source) {
+          const copyItem = source[key]
+          if (copyItem && typeof copyItem === 'object') {
+            if (copyItem.constructor === Array) {
+              target[key] = []
+            } else {
+              target[key] = {}
+            }
+            stack.push({
+              source: copyItem,
+              target: target[key]
+            })
+          } else {
+            if (key === 'label') {
+              target[key] = this.checkI18n(copyItem)
+            } else {
+              target[key] = copyItem
+            }
+          }
+        }
+      }
+      return needCopy
     },
     // --- emit start ---
     radioChange (item, val) {
