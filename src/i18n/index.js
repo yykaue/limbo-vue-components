@@ -13,7 +13,7 @@ const i18n = Vue.observable({
 })
 
 // Function to get translation based on the current language
-export function $t (path) {
+export function translate (path) {
   return map[i18n.lang][path]
 }
 
@@ -21,7 +21,6 @@ export function $t (path) {
 export function setLang (newLang) {
   if (map[newLang]) {
     i18n.lang = newLang
-    localStorage.setItem('lang', newLang)
   }
 }
 // Optional: Watch for external changes to localStorage (e.g., in another tab)
