@@ -128,6 +128,6 @@
 
 import { setLang } from "limbo-vue-components";
 //当语言变化时调用
-setLang("zh_CN");
-setLang("en_US");
+setLang("zh_cn");
+setLang("en_us");
 ```
