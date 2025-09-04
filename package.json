@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "analyz": "NODE_ENV=production npm_config_report=true yarn build",
-    "build": "yarn clean && NODE_ENV=production webpack --config ./build/webpack.config.js",
+    "build": "yarn clean && webpack --config ./build/webpack.config.js",
     "clean": "rimraf lib",
     "lint:ext": "eslint --ext .js,.vue .",
     "lint:fix": "eslint --fix --ext .js,.vue .",

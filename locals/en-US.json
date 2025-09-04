@@ -1,0 +1,10 @@
+{
+  "form.pleaseEnter": "Please enter ",
+  "form.pleaseSelect": "Please select ",
+  "form.startDate": "Start Date",
+  "form.endDate": "End Date",
+  "form.rangeSeparator": "to",
+  "form.search": "Search",
+  "form.reset": "Reset",
+  "form.unknownType": "No such type"
+}

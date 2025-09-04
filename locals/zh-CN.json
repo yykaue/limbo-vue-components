@@ -1,0 +1,10 @@
+{
+  "form.pleaseEnter": "请输入",
+  "form.pleaseSelect": "请选择",
+  "form.startDate": "开始日期",
+  "form.endDate": "结束日期",
+  "form.rangeSeparator": "至",
+  "form.search": "搜索",
+  "form.reset": "重置",
+  "form.unknownType": "无此类型"
+}

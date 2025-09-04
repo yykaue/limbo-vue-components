@@ -26,7 +26,7 @@
               v-model="item.val"
               v-bind="item.contentAttrs"
               :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
-              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `${$t('form.pleaseEnter')}${item.name}`)"
               @keyup.enter.native="search"
             />
           </template>
@@ -37,7 +37,7 @@
               v-bind="item.contentAttrs"
               type="textarea"
               :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
-              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `${$t('form.pleaseEnter')}${item.name}`)"
               @keyup.enter.native="search"
             />
           </template>
@@ -51,7 +51,7 @@
               :min="checkDefault(item, ['contentAttrs', 'min'], 0)"
               :max="checkDefault(item, ['contentAttrs', 'max'], 100000000000000000)"
               :precision="checkDefault(item, ['contentAttrs', 'precision'], 0)"
-              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请输入${item.name}`)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `${$t('form.pleaseEnter')}${item.name}`)"
               @keyup.enter.native="search"
             />
           </template>
@@ -63,7 +63,7 @@
               v-bind="item.contentAttrs"
               :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
               :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
-              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `${$t('form.pleaseSelect')}${item.name}`)"
               @change="val => selectChange(item, val)"
               @keyup.enter.native="search"
             >
@@ -92,7 +92,7 @@
               :options="checkOptions(options[item.params.option])"
               :clearable="checkDefault(item, ['contentAttrs', 'clearable'], true)"
               :filterable="checkDefault(item, ['contentAttrs', 'filterable'], true)"
-              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `${$t('form.pleaseSelect')}${item.name}`)"
               @change="val => cascaderChange(item, val)"
               @active-item-change="val => cascaderActive(item, val)"
             />
@@ -139,11 +139,10 @@
               :editable="checkDefault(item, ['contentAttrs', 'editable'], false)"
               :style="checkDefault(item, ['contentAttrs', 'style'], 'width:100%')"
               :value-format="checkDefault(item, ['contentAttrs', 'valueFormat'], 'timestamp')"
-
-              :range-separator="checkDefault(item, ['contentAttrs', 'rangeSeparator'], '至')"
-              :start-placeholder="checkDefault(item, ['contentAttrs', 'startPlaceholder'], '开始日期')"
-              :end-placeholder="checkDefault(item, ['contentAttrs', 'endPlaceholder'], '结束日期')"
-              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `请选择${item.name}`)"
+              :range-separator="checkDefault(item, ['contentAttrs', 'rangeSeparator'], $t('form.rangeSeparator'))"
+              :start-placeholder="checkDefault(item, ['contentAttrs', 'startPlaceholder'], $t('form.startDate'))"
+              :end-placeholder="checkDefault(item, ['contentAttrs', 'endPlaceholder'], $t('form.endDate'))"
+              :placeholder="checkDefault(item, ['contentAttrs', 'placeholder'], `${$t('form.pleaseSelect')}${item.name}`)"
               @change="val => changeDateTimePicker(val, item)"
             />
           </template>
@@ -153,7 +152,7 @@
           </template>
           <!--default-->
           <template v-else>
-            <span>无此类型</span>
+            <span>{{ $t('form.unknownType') }}</span>
           </template>
         </el-form-item>
       </el-col>
@@ -172,13 +171,13 @@
                 type="primary"
                 @click="search"
               >
-                {{ checkDefault(formItem.btnObj, ['searchName'], '搜索') }}
+                {{ checkDefault(formItem.btnObj, ['searchName'], $t('form.search')) }}
               </el-button>
               <el-button
                 v-if="!formItem.btnObj.showList || formItem.btnObj.showList.includes('reset')"
                 @click="reset"
               >
-                {{ checkDefault(formItem.btnObj, ['resetName'], '重置') }}
+                {{ checkDefault(formItem.btnObj, ['resetName'], $t('form.reset')) }}
               </el-button>
             </div>
           </slot>
@@ -190,7 +189,7 @@
 
 <script>
 import RenderItem from './render'
-
+import { $t } from '../../../src/i18n/index'
 export default {
   name: 'KeFormItem',
   inheritAttrs: false,
@@ -231,6 +230,7 @@ export default {
   mounted () {
   },
   methods: {
+    $t,
     checkDefault (target, list = [], defaultVal) {
       const payload = list.reduce((pre, cur, i, arr) => {
         let backParams

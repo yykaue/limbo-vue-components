@@ -18,6 +18,7 @@ import KeTable from '../packages/KeTable'
 import KeToBack from '../packages/KeToBack'
 import KeUnfinished from '../packages/KeUnfinished'
 import KeUploadAli from '../packages/KeUploadAli'
+import { setLang } from './i18n/index'
 // import KeVideo from '../packages/KeVideo'
 
 const components = {
@@ -123,9 +124,11 @@ export {
   KeUnfinished,
   KeUploadAli,
   // KeVideo
-  componentUI
+  componentUI,
+  setLang
 }
 export default {
+  setLang,
   install,
   componentUI,
   ...components

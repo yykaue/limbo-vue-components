@@ -1,19 +1,19 @@
 ## limbo-vue-components
 
-   通用组件库
+通用组件库
 
 ## 安装方法
 
     npm i limbo-vue-components
 
 ## 使用说明
-##### 全局引入：
+
+##### 全局引入
 
     import Packages from 'limbo-vue-components'
     Vue.use(Packages)
 
-
-##### 局部引入：
+##### 局部引入
 
     import { xxx } from 'limbo-vue-components'
     Vue.use(xxx)
@@ -121,3 +121,13 @@
           }
         ]
       }
+
+## 国际化
+
+```js
+
+import { setLang } from "limbo-vue-components";
+//当语言变化时调用
+setLang("zh_CN");
+setLang("en_US");
+```
