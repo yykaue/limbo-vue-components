@@ -24,12 +24,18 @@
           :prop="item.headerAttrs && item.headerAttrs.prop || item.key"
           :label="typeof item.name === 'function' ? item.name() : item.name"
         >
+          <!-- slot="label" -->
           <RenderLabel
             v-if="item.renderLabel"
             slot="label"
             :model="model"
             :item="item"
           />
+          <LabelTooltip
+            v-else
+            slot="label"
+            :item="item" />
+          <!-- input -->
           <template v-if="item.type === 'input'">
             <el-input
               v-model="model[item.key]"
@@ -224,6 +230,7 @@
 import RenderItem from './render'
 import RenderJson from './renderJson'
 import RenderLabel from './renderLabel'
+import LabelTooltip from './labelTooltip'
 
 export default {
   name: 'KeFormModel',
@@ -231,7 +238,8 @@ export default {
   components: {
     RenderItem,
     RenderJson,
-    RenderLabel
+    RenderLabel,
+    LabelTooltip
   },
   props: {
     loading: {

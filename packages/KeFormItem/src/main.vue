@@ -20,6 +20,16 @@
           v-bind="item.headerAttrs"
           :label="typeof item.name === 'function' ? item.name() : item.name"
         >
+          <!-- slot="label" -->
+          <RenderLabel
+            v-if="item.renderLabel"
+            slot="label"
+            :item="item"
+          />
+          <LabelTooltip
+            v-else
+            slot="label"
+            :item="item" />
           <!--input-->
           <template v-if="item.type === 'input'">
             <el-input
@@ -189,11 +199,17 @@
 
 <script>
 import RenderItem from './render'
+import RenderLabel from './renderLabel'
+import LabelTooltip from './labelTooltip'
 import { translate } from '../../../src/i18n/index'
 export default {
   name: 'KeFormItem',
   inheritAttrs: false,
-  components: { RenderItem },
+  components: {
+    RenderItem,
+    RenderLabel,
+    LabelTooltip
+  },
   props: {
     formItem: {
       type: Object,
