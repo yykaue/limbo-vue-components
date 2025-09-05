@@ -6,5 +6,6 @@
   "form.rangeSeparator": "to",
   "form.search": "Search",
   "form.reset": "Reset",
-  "form.unknownType": "No such type"
+  "form.unknownType": "No such type",
+  "form.resetedMessage": "Conditions have been reset"
 }

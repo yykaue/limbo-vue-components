@@ -6,5 +6,6 @@
   "form.rangeSeparator": "至",
   "form.search": "搜索",
   "form.reset": "重置",
-  "form.unknownType": "无此类型"
+  "form.unknownType": "无此类型",
+  "form.resetedMessage": "条件已重置"
 }

@@ -327,7 +327,7 @@ export default {
       this.resetParams()
       this.$emit('reset')
       this.$ElMessage({
-        message: this.checkDefault(this.formItem.btnObj, ['resetMessage'], '条件已重置'),
+        message: this.checkDefault(this.formItem.btnObj, ['resetMessage'], translate('form.resetedMessage')),
         type: 'success',
         duration: 2000
       })
