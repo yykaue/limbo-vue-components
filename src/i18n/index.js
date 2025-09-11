@@ -9,7 +9,7 @@ const map = {
 
 // Create a reactive object to store the current language
 const i18n = Vue.observable({
-  lang: localStorage.getItem('language') || 'zh_cn'
+  lang: localStorage.getItem('langSettings') || 'zh_cn'
 })
 
 // Function to get translation based on the current language
@@ -28,7 +28,7 @@ export function setLang (newLang) {
 }
 // Optional: Watch for external changes to localStorage (e.g., in another tab)
 window.addEventListener('storage', event => {
-  if (event.key === 'language' && map[event.newValue]) {
+  if (event.key === 'langSettings' && map[event.newValue]) {
     i18n.lang = event.newValue
   }
 })
