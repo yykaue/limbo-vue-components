@@ -31,14 +31,14 @@ export default {
       disabled: false
     }
   },
-  computed:{
+  computed: {
   },
   mounted () {
     this.showTooltip()
   },
   methods: {
     showTooltip () {
-      this.disabled = this.$refs.label.offsetWidth < this.$refs.label.parentNode.offsetWidth
+      this.disabled = this.$refs.label.offsetWidth <= this.$refs.label.parentNode.offsetWidth
     }
   }
 }
@@ -47,6 +47,7 @@ export default {
 
 <style scoped lang="scss">
 .label-layout {
+  display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

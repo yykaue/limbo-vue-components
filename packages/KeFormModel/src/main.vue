@@ -34,7 +34,8 @@
           <LabelTooltip
             v-else
             slot="label"
-            :item="item" />
+            :item="item"
+          />
           <!-- input -->
           <template v-if="item.type === 'input'">
             <el-input
@@ -438,6 +439,13 @@ export default {
   .row-wrap{
     display: flex;
     flex-wrap: wrap;
+    ::v-deep .el-form-item__label {
+      display: flex;
+      justify-content: flex-end;
+      &::before {
+        flex: 0 0 auto; // 不放大，不缩小，根据内容自适应
+      }
+    }
   }
 
   ::v-deep .el-input-number .el-input__inner {
