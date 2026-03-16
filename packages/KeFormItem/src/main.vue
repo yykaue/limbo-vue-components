@@ -342,11 +342,6 @@ export default {
     reset () {
       this.resetParams()
       this.$emit('reset')
-      this.$ElMessage({
-        message: this.checkDefault(this.formItem.btnObj, ['resetMessage'], translate('form.resetedMessage')),
-        type: 'success',
-        duration: 2000
-      })
     },
     // --- emit end ---
     changeDateTimePicker (val, item) {

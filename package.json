@@ -1,6 +1,6 @@
 {
   "name": "limbo-vue-components",
-  "version": "2.1.5",
+  "version": "2.1.5-jiangsu",
   "description": "通用组件库",
   "main": "lib/index.js",
   "scripts": {
